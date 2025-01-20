@@ -28,7 +28,7 @@ public abstract class FoodFactory : MonoBehaviour
 
     protected virtual async UniTaskVoid CreateFood()
     {
-        string foodId = "Art/" + foodType.ToString();
+        string foodId = "Prefab/" + foodType.ToString();
         Food food = (await Managers.Pool.PopAsync(foodId)).GetComponent<Food>();
         platform.Push(food);
     }

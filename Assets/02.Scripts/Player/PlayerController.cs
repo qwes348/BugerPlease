@@ -4,12 +4,12 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     #region const
-    private const float BaseMoveSpeed = 1.5f;
+    private const float BaseMoveSpeed = 3f;
     private const float BaseRotateSpeed = 1000f;
     #endregion
     
     #region AnimParam
-    private readonly int animParamMoveAmount = Animator.StringToHash("MoveAmount");
+    private readonly int animParamMoveSpeed = Animator.StringToHash("MoveSpeed");
     #endregion
     
     private Transform cameraTransform;
@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         Vector3 inputDir = GameUI.Instance.InputCanvas.GetInputDir();
-        anim.SetFloat(animParamMoveAmount, inputDir.magnitude);
+        anim.SetFloat(animParamMoveSpeed, inputDir.magnitude);
         if (inputDir == Vector3.zero)
             return;
         

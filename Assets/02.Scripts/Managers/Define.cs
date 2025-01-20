@@ -7,19 +7,22 @@ public class Define
 {
     #region constant
     
-    public const int MAX_CHARACTERS_COUNT = 20;
-    public const int LEVEL_UP_THRESHOLD = 4000;
-    public const int MAX_LEVEL = 4;
-    public const int FEVER_THRESHOLD = 10;
-    public const int SUPER_FEVER_THRESHOLD = 25;
-    
-    public const float SPECIAL_PROBABILITY = 0.02f;
-    public const float GAME_INITIAL_TIME = 60f;
-    public const float FEVER_DURATION = 3f;
-    public const float DEFAULT_BGM_VOLUME = 0.4f;
-    public const float DEFAULT_SFX_VOLUME = 0.5f;
+    /// <summary>
+    /// 들고가기, 내려놓기의 발동 딜레이 시간 
+    /// </summary>
+    public const float PickupPutdownTresholdTime = 0.5f;
+    /// <summary>
+    /// 구매 발판의 발동 딜레이 시간
+    /// </summary>
+    public const float PurchaseThresholdTime = 0.25f;
 
-    public static readonly float[] BGM_PITCH = new float[] { 1.0f, 1.1f, 1.2f };
+    public const int PriceTableSet = 300;
+    
+    public const float GameInitialTime = 60f;
+    public const float DefaultBGMVolume = 0.4f;
+    public const float DefaultSfxVolume = 0.5f;
+
+    public static readonly float[] BGMPitch = new float[] { 1.0f, 1.1f, 1.2f };
     
     #endregion
 
@@ -55,6 +58,30 @@ public class Define
         None = -1,
         Hamburger,
         Frenchfries
+    }
+    public enum PurchasableType
+    {
+        None = -1,
+        TableSet
+    }
+    public enum SeatState
+    {
+        Empty,
+        Using
+    }
+    public enum TableState
+    {
+        Empty,
+        Using,
+        Used
+    }
+    public enum CustomerState
+    {
+        Waiting,
+        Ordering,
+        SeatWaiting,
+        Eating,
+        Exiting
     }
     #endregion
 }

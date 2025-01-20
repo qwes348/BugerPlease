@@ -67,7 +67,7 @@ public class GameManager
     
     public void Init()
     {
-        gameTime = Define.GAME_INITIAL_TIME;
+        gameTime = Define.GameInitialTime;
         combo = -1;
         level = 0;
         score = 0;

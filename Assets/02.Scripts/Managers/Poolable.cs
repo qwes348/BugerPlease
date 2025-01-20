@@ -35,5 +35,5 @@ public class Poolable : MonoBehaviour
     public void ResetAutoPoolingTimer()
     {
         poolingTimer = 0f;
-    }    
+    }
 }

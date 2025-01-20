@@ -23,7 +23,7 @@ MonoBehaviour:
   smallIconPadding: {x: 0.15, y: 0.15}
   customFolders: []
   useToolboxSceneView: 1
-  selectorKey: 9
+  selectorKey: 308
   useToolboxDrawers: 1
   forceDefaultLists: 0
   decoratorDrawerHandlers:

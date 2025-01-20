@@ -10,32 +10,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: Food
+  m_Name: Prefab
   m_EditorClassIdentifier: 
-  m_GroupName: Food
-  m_GUID: c4ebdfb7a5a707b4fb48e87e6a644d45
+  m_GroupName: Prefab
+  m_GUID: 2ce11b2384d69e4449c94c78e2eca7ea
   m_SerializeEntries:
-  - m_GUID: 5ba9a30c6fbd83a44bc0aee3b9c517ed
-    m_Address: Prefab/Paper Cup
+  - m_GUID: 3c6ff7a2b203de54590d3d505c8041b0
+    m_Address: Prefab/Customer1
     m_ReadOnly: 0
     m_SerializedLabels:
-    - food
+    - prefab
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: a1035ee19ede3074dae9401d381b95fe
-    m_Address: Prefab/Hamburger
+  - m_GUID: c6625a9cd87f8084a92b9edf57516a94
+    m_Address: Prefab/TableSet
     m_ReadOnly: 0
     m_SerializedLabels:
-    - food
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: c04b5bb1b07e18d4f88516bbf46b606d
-    m_Address: Prefab/Frenchfries
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - food
+    - prefab
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: bce8fb1795793844c9a86a122ffb98c4, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: 514a9e7d1194ed64094c9a0cbdebac7c, type: 2}
-    - {fileID: 11400000, guid: 1e2bb356659991f4798899282c0bffd0, type: 2}
+    - {fileID: 11400000, guid: 2cf25fcad2216ed4aae7c753df0c7b4c, type: 2}
+    - {fileID: 11400000, guid: e7120bdb261420e47873416c44e24dae, type: 2}

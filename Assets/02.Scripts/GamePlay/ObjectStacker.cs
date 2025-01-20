@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-using Cysharp.Threading.Tasks;
 using NaughtyAttributes;
-using UnityEngine.Serialization;
 
 public class ObjectStacker : MonoBehaviour
 {
@@ -46,7 +44,12 @@ public class ObjectStacker : MonoBehaviour
     [Button("[TEST] 팝")]
     public GameObject Pop()
     {
+        if (objectStack.Count == 0)
+        {
+            return null;
+        }
+
         var obj = objectStack.Pop();
-        return obj;
+            return obj;
     }
 }

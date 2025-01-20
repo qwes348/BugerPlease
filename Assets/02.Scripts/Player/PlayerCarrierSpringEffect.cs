@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerCarrier))]
+[RequireComponent(typeof(GameObjectCarrier))]
 public class PlayerCarrierSpringEffect : MonoBehaviour
 {
     [SerializeField]
@@ -12,13 +12,13 @@ public class PlayerCarrierSpringEffect : MonoBehaviour
     [SerializeField]
     private float inertiaMultiplier = 0.5f; // 관성 조절
     
-    private PlayerCarrier carrier;
+    private GameObjectCarrier carrier;
     private List<Vector3> velocities = new List<Vector3>();
     private Vector3 playerPrevPos;
 
     private void Awake()
     {
-        carrier = GetComponent<PlayerCarrier>();
+        carrier = GetComponent<GameObjectCarrier>();
         carrier.onCarriedAdded += OnCarriedAdded;
         carrier.onCarriedRemovedAt += OnCarriedRemovedAt;
     }

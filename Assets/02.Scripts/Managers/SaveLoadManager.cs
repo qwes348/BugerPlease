@@ -62,8 +62,8 @@ public class SaveLoadManager
     public class SaveData
     {
         private int highScore = 0;
-        private float bgmVolume = Define.DEFAULT_BGM_VOLUME;
-        private float sfxVolume = Define.DEFAULT_SFX_VOLUME;
+        private float bgmVolume = Define.DefaultBGMVolume;
+        private float sfxVolume = Define.DefaultSfxVolume;
 
         #region 프로퍼티
         public int HighScore

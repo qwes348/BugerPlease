@@ -56,7 +56,7 @@ public class AudioManager
 
     public void SetBgmPitch(int pitchLevel)
     {
-        bgmSource.pitch = Define.BGM_PITCH[pitchLevel];
+        bgmSource.pitch = Define.BGMPitch[pitchLevel];
     }
 
     public void SetBgmVolume(float volume)
