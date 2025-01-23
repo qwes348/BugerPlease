@@ -13,11 +13,13 @@ public class CustomerController : MonoBehaviour
     private NavMeshAgent agent;
     private Animator anim;
     private int wantBurgerCount;
-    private GameObjectCarrier carrier;
+    private ObjectCarrier objectCarrier;
     
     #region Properties
     public Define.CustomerState CurrentState => currentState;
+    public int WantBurgerCount => wantBurgerCount;
     public TableSeat MyTableSeat { get; set; }
+    public ObjectCarrier ObjectCarrier => objectCarrier;
     #endregion
     
     #region Const
@@ -38,7 +40,9 @@ public class CustomerController : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
-        carrier = GetComponent<GameObjectCarrier>();
+        objectCarrier = GetComponent<ObjectCarrier>();
+
+        agent.updateRotation = false;
     }
 
     private void Update()
@@ -70,20 +74,31 @@ public class CustomerController : MonoBehaviour
         agent.SetDestination(point);
     }
 
+    private void RotationUpdate()
+    {
+        if (agent.velocity.magnitude > Mathf.Epsilon)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(agent.velocity.normalized);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
+        }
+    }
+
     private async UniTask Ordering()
     {
         // 주문대로 이동
-        GoToPoint(StoreManager.Instance.CustomerLineController.OrderLinePoinnt.position);
+        GoToPoint(StoreManager.Instance.TransformPoints.OrderLinePoint.position);
         await UniTask.Yield();
         
         // 주문대로 이동할때까지 대기 & 버거가 준비될때까지 대기
-        while (agent.remainingDistance > agent.stoppingDistance || StoreManager.Instance.BurgerStack.Count <= 0)
+        while (agent.remainingDistance > agent.stoppingDistance || StoreManager.Instance.CounterBurgerStack.Count <= wantBurgerCount)
         {
             await UniTask.Yield();
         }
-
-        var burger = StoreManager.Instance.BurgerStack.Pop();
-        carrier.PushCarryingObject(burger.transform);
+        for (int i = 0; i < wantBurgerCount; i++)
+        {
+            var burger = StoreManager.Instance.CounterBurgerStack.Pop();
+            objectCarrier.PushCarryingObject(burger);
+        }
         SetState(Define.CustomerState.SeatWaiting);
     }
 
@@ -98,8 +113,45 @@ public class CustomerController : MonoBehaviour
                 break;
             }
             
+            // 1초마다 빈자리 요구
             await UniTask.Delay(TimeSpan.FromSeconds(1f));
         }
+    }
+
+    private async UniTask EatingSequence()
+    {
+        // 내 자리로 이동
+        GoToPoint(MyTableSeat.transform.position);
+        await UniTask.Yield();
+        
+        // 이동 완료까지 대기
+        while (agent.remainingDistance > agent.stoppingDistance)
+        {
+            // 도착하기 전까지만 회전 업데이트
+            RotationUpdate();
+            await UniTask.Yield();
+        }
+        
+        // 이동 완료를 테이블에 알림
+        MyTableSeat.OnCustomerArrived(this);
+        // 앉기 애니메이션 재생
+        transform.rotation = MyTableSeat.transform.rotation;
+        anim.SetBool(animParamIsSitting, true);
+    }
+
+    private async UniTask ExitingSequence()
+    {
+        StoreManager.Instance.AddMoneyBundleToStack(wantBurgerCount).Forget();
+        anim.SetBool(animParamIsSitting, false);
+        GoToPoint(StoreManager.Instance.TransformPoints.ExitPoint.position);
+        await UniTask.Yield();
+
+        while (agent.remainingDistance > agent.stoppingDistance)
+        {
+            await UniTask.Yield();
+        }
+        
+        Managers.Pool.Push(GetComponent<Poolable>());
     }
     
     public void SetState(Define.CustomerState state)
@@ -122,9 +174,10 @@ public class CustomerController : MonoBehaviour
                 WaitForSeatAssign();
                 break;
             case Define.CustomerState.Eating:
-                GoToPoint(MyTableSeat.transform.position);
+                EatingSequence();
                 break;
             case Define.CustomerState.Exiting:
+                ExitingSequence();
                 break;
         }
     }
@@ -134,12 +187,15 @@ public class CustomerController : MonoBehaviour
         switch (currentState)
         {
             case Define.CustomerState.Waiting:
+                RotationUpdate();
                 break;
             case Define.CustomerState.Ordering:
+                RotationUpdate();
                 break;
             case Define.CustomerState.Eating:
                 break;
             case Define.CustomerState.Exiting:
+                RotationUpdate();
                 break;
         }
     }
@@ -149,7 +205,6 @@ public class CustomerController : MonoBehaviour
         switch (currentState)
         {
             case Define.CustomerState.SeatWaiting:
-                Debug.LogError("SeatWaitingExit");
                 // 다음 손님을 주문대로 보내게함
                 StoreManager.Instance.CustomerLineController.NextOrderRequest();
                 break;

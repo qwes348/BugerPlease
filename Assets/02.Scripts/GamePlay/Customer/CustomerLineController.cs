@@ -3,34 +3,49 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using Cysharp.Threading.Tasks;
 using NaughtyAttributes;
+using System;
+using System.Threading;
+using Random = UnityEngine.Random;
 
 public class CustomerLineController : MonoBehaviour
 {
-    [SerializeField]
-    private Transform waitingLinePoint;
-    [SerializeField]
-    private Transform orderLinePoinnt;
-    [SerializeField]
-    private Transform spawnPoint;
-    
     private Queue<CustomerController> waitingCustomers = new Queue<CustomerController>();
     private CustomerController currentOrderingCustomer;
     
-    public Transform WaitingLinePoint => waitingLinePoint;
-    public Transform OrderLinePoinnt => orderLinePoinnt;
-    
     // 손님 프리팹 어드레서블
     private const string customerAddress = "Prefab/Customer";
-    private const int customerAddressCount = 1;
+    private const int customerAddressCount = 3;
+    private CancellationTokenSource spawnCts;   // TODO: 게임 끝나면 취소 요청
+
+    public async UniTask ContinuosSpawnCustomers()
+    {
+        // 이중으로 생성 태스크가 돌지 않도록 방지
+        if (spawnCts != null)
+            return;
+        spawnCts = new CancellationTokenSource();
+
+        while (!spawnCts.IsCancellationRequested)
+        {
+            if (waitingCustomers.Count >= Define.MaxWaitingCustomerCount)
+            {
+                // 손님줄이 Max만큼 길다면 1초간 대기
+                await UniTask.Delay(TimeSpan.FromSeconds(1f));
+                continue;
+            }
+
+            await SpawnNewCustomer();
+            await UniTask.Delay(TimeSpan.FromSeconds(1f));
+        }
+    }
 
     [Button]
     public async UniTask SpawnNewCustomer()
     {
-        var newCustomer = (await Managers.Pool.PopAsync(customerAddress + Random.Range(1, customerAddressCount))).GetComponent<CustomerController>();
-        newCustomer.transform.position = spawnPoint.position;
-        newCustomer.Init(1);
+        var newCustomer = (await Managers.Pool.PopAsync(customerAddress + Random.Range(1, customerAddressCount + 1))).GetComponent<CustomerController>();
+        newCustomer.transform.position = StoreManager.Instance.TransformPoints.SpawnPoint.position;
+        newCustomer.Init(Random.Range(1, Define.MaxCustomerWantCount + 1)); // TODO: 랜덤화
         newCustomer.gameObject.SetActive(true);
-        newCustomer.GoToPoint(waitingLinePoint.position + Vector3.forward * waitingCustomers.Count);
+        newCustomer.GoToPoint(StoreManager.Instance.TransformPoints.WaitingLinePoint.position + Vector3.forward * waitingCustomers.Count);
         waitingCustomers.Enqueue(newCustomer);
     }
 
@@ -42,28 +57,12 @@ public class CustomerLineController : MonoBehaviour
         
         currentOrderingCustomer = waitingCustomers.Dequeue();
         currentOrderingCustomer.SetState(Define.CustomerState.Ordering);
-        
-        Debug.LogError("NextOrderRequest");
-    }
-    
-    private void OnDrawGizmosSelected()
-    {
-        if (waitingLinePoint != null)
-        {
-            Gizmos.color = Color.blue;
-            Gizmos.DrawWireSphere(waitingLinePoint.position, 0.2f);
-        }
 
-        if (orderLinePoinnt != null)
+        int i = 0;
+        foreach (var customer in waitingCustomers)
         {
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(orderLinePoinnt.position, 0.2f);
-        }
-
-        if (spawnPoint != null)
-        {
-            Gizmos.color = Color.magenta;
-            Gizmos.DrawWireSphere(spawnPoint.position, 0.2f);
+            customer.GoToPoint(StoreManager.Instance.TransformPoints.WaitingLinePoint.position + Vector3.forward * i);
+            i++;
         }
     }
 }

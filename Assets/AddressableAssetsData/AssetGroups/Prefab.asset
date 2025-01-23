@@ -15,8 +15,32 @@ MonoBehaviour:
   m_GroupName: Prefab
   m_GUID: 2ce11b2384d69e4449c94c78e2eca7ea
   m_SerializeEntries:
+  - m_GUID: 10ded1cbe1a1e1d409ad0377e3381adc
+    m_Address: Prefab/MoneyBundle
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - prefab
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 247b037645a435c44abd87f4d2486b31
+    m_Address: Prefab/TrashSet
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - prefab
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 38f19714929f34a4c8f5c3ffb148b068
+    m_Address: Prefab/Customer3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - prefab
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3c6ff7a2b203de54590d3d505c8041b0
     m_Address: Prefab/Customer1
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - prefab
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: af1897a3e27468941ac3c16c4dbe5ec8
+    m_Address: Prefab/Customer2
     m_ReadOnly: 0
     m_SerializedLabels:
     - prefab

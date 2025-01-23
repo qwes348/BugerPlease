@@ -8,5 +8,5 @@ public abstract class PurchasableItem : MonoBehaviour
         gameObject.SetActive(false);
     }
     
-    public abstract void OnPurchase();
+    public abstract void OnPurchased();
 }

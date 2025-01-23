@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(GameObjectCarrier))]
+[RequireComponent(typeof(ObjectCarrier))]
 public class PlayerCarrierSpringEffect : MonoBehaviour
 {
     [SerializeField]
@@ -12,23 +12,23 @@ public class PlayerCarrierSpringEffect : MonoBehaviour
     [SerializeField]
     private float inertiaMultiplier = 0.5f; // 관성 조절
     
-    private GameObjectCarrier carrier;
+    private ObjectCarrier objectCarrier;
     private List<Vector3> velocities = new List<Vector3>();
     private Vector3 playerPrevPos;
 
     private void Awake()
     {
-        carrier = GetComponent<GameObjectCarrier>();
-        carrier.onCarriedAdded += OnCarriedAdded;
-        carrier.onCarriedRemovedAt += OnCarriedRemovedAt;
+        objectCarrier = GetComponent<ObjectCarrier>();
+        objectCarrier.onCarriableAdded += OnCarriableAdded;
+        objectCarrier.onCarriableRemovedAt += OnCarriableRemovedAt;
     }
 
-    private void OnCarriedAdded(Transform newCarried)
+    private void OnCarriableAdded(Stackable newCarried)
     {
         velocities.Add(Vector3.zero);
     }
 
-    private void OnCarriedRemovedAt(int removeIndex)
+    private void OnCarriableRemovedAt(int removeIndex)
     {
         velocities.RemoveAt(removeIndex);
     }
@@ -37,18 +37,18 @@ public class PlayerCarrierSpringEffect : MonoBehaviour
     {
         Vector3 playerMovementDelta = transform.position - playerPrevPos;
 
-        for (int i = 1; i < carrier.CarriedObjects.Count; i++)
+        for (int i = 1; i < objectCarrier.CarriedObjects.Count; i++)
         {
             // 플레이어 이동량을 반영한 목표 위치
-            Vector3 targetPos = carrier.CarriedObjects[i - 1].position - playerMovementDelta * inertiaMultiplier;
-            targetPos.y = carrier.CarriedObjects[i].position.y; // y축은 연출 안할거임
+            Vector3 targetPos = objectCarrier.CarriedObjects[i - 1].transform.position - playerMovementDelta * inertiaMultiplier;
+            targetPos.y = objectCarrier.CarriedObjects[i].transform.position.y; // y축은 연출 안할거임
             
             // 스프링 힘 계산
-            Vector3 force = (targetPos - carrier.CarriedObjects[i].position) * stifness;
+            Vector3 force = (targetPos - objectCarrier.CarriedObjects[i].transform.position) * stifness;
             velocities[i] += force * Time.fixedDeltaTime;
             velocities[i] *= (1 - damping * Time.fixedDeltaTime);
 
-            carrier.CarriedObjects[i].position += velocities[i] * Time.fixedDeltaTime;
+            objectCarrier.CarriedObjects[i].transform.position += velocities[i] * Time.fixedDeltaTime;
         }
         
         playerPrevPos = transform.position;

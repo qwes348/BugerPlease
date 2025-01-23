@@ -21,7 +21,7 @@ public class FoodPlatform : MonoBehaviour
         if (!IsCanStackMore)
             return false;
         
-        stacker.Push(food.gameObject);
+        stacker.Push(food.GetComponent<Stackable>());
         food.gameObject.SetActive(true);
         return true;
     }
