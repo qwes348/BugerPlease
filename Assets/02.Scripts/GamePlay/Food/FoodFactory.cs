@@ -30,6 +30,7 @@ public abstract class FoodFactory : MonoBehaviour
     {
         string foodId = "Prefab/" + foodType.ToString();
         Food food = (await Managers.Pool.PopAsync(foodId)).GetComponent<Food>();
+        food.transform.position = transform.position;
         platform.Push(food);
     }
 }

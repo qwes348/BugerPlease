@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks.Triggers;
 using NaughtyAttributes;
 using System;
 using UnityEngine;
@@ -85,12 +86,13 @@ public class CustomerController : MonoBehaviour
 
     private async UniTask Ordering()
     {
+        GameUI.Instance.SpeechBubbleCanvas.ActiveBubble(this, Define.SpeechBubbleType.BurgerCount);
         // 주문대로 이동
         GoToPoint(StoreManager.Instance.TransformPoints.OrderLinePoint.position);
         await UniTask.Yield();
         
         // 주문대로 이동할때까지 대기 & 버거가 준비될때까지 대기
-        while (agent.remainingDistance > agent.stoppingDistance || StoreManager.Instance.CounterBurgerStack.Count <= wantBurgerCount)
+        while (agent.remainingDistance > agent.stoppingDistance || StoreManager.Instance.CounterBurgerStack.Count < wantBurgerCount)
         {
             await UniTask.Yield();
         }
@@ -105,10 +107,13 @@ public class CustomerController : MonoBehaviour
     // 자리를 지정받을때까지 대기
     private async UniTask WaitForSeatAssign()
     {
+        GameUI.Instance.SpeechBubbleCanvas.Clear();
+        GameUI.Instance.SpeechBubbleCanvas.ActiveBubble(this, Define.SpeechBubbleType.NoSeat);
         while (true)
         {
             if (StoreManager.Instance.TryAssignSeat(this))
             {
+                GameUI.Instance.SpeechBubbleCanvas.Clear();
                 SetState(Define.CustomerState.Eating);
                 break;
             }

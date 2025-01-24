@@ -1,3 +1,4 @@
+using DG.Tweening;
 using NaughtyAttributes;
 using System;
 using System.Collections;
@@ -47,7 +48,11 @@ public class ObjectCarrier : MonoBehaviour
             return;
         
         newCarried.transform.SetParent(carrierTransform);
-        newCarried.transform.position = (SpaceY * carriedObjects.Count * Vector3.up) + carrierTransform.position;
+        if(DOTween.IsTweening(newCarried.transform))
+            DOTween.Kill(newCarried.transform);
+        var pos = (SpaceY * carriedObjects.Count * Vector3.up) + carrierTransform.position;
+        newCarried.transform.DOLocalJump(carrierTransform.InverseTransformPoint(pos), Define.StackJumpPower, 1, 0.3f);
+        // newCarried.transform.position = (SpaceY * carriedObjects.Count * Vector3.up) + carrierTransform.position;
         carriedObjects.Add(newCarried);
         
         onCarriableAdded?.Invoke(newCarried);

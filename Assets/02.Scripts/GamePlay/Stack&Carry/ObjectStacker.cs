@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
 using NaughtyAttributes;
@@ -32,8 +33,9 @@ public class ObjectStacker : MonoBehaviour
         Vector3 pos = Vector3.right * rowIndex * space.x;
         pos += Vector3.up * colIndex * space.y;
         pos += leftTopCornerPos;
-        obj.transform.position = pos;
+        // obj.transform.position = pos;
         obj.transform.SetParent(transform);
+        obj.transform.DOLocalJump(transform.InverseTransformPoint(pos), Define.StackJumpPower, 1, 0.3f);
         objectStack.Push(obj);
         onPushed?.Invoke();
     }

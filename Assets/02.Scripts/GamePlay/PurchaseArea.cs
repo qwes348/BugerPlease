@@ -31,6 +31,10 @@ public class PurchaseArea : MonoBehaviour
     private async UniTask Purchase()
     {
         // TODO: 나중에 연출 효과구현 / 돈 차감 구현
+        if(StoreManager.Instance.MoneyAmount < price)
+            return;
+        StoreManager.Instance.MoneyAmount -= price;
+        
         await UniTask.Yield();
 
         switch (myPurchasableType)

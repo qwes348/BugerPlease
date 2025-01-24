@@ -15,8 +15,8 @@ public class StoreManager : StaticMono<StoreManager>
     [Header(("런타임 데이터"))]
     [SerializeField][ReadOnly]
     private List<TableSet> unlockedTables = new List<TableSet>();
-    [SerializeField][ReadOnly]
-    private int moneyAmount = 0;
+    [SerializeField] [ReadOnly]
+    private int moneyAmount;
     
     private CustomerLineController customerLineController;
     private Queue<TableSet> emptyTablesQueue = new Queue<TableSet>();
@@ -29,13 +29,21 @@ public class StoreManager : StaticMono<StoreManager>
     public int MoneyAmount
     {
         get => moneyAmount;
-        set => moneyAmount = value;
+        set
+        {
+            moneyAmount = value;
+            onMoneyChanged?.Invoke(moneyAmount);
+        }
     }
-
+    #endregion
+    
+    #region Actions
+    public Action<int> onMoneyChanged;
     #endregion
 
     private void Awake()
     {
+        moneyAmount = Define.StartingMoney;
         customerLineController = GetComponent<CustomerLineController>();
         transformPoints = GetComponent<StoreTransformPoints>();
     }

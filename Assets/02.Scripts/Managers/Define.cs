@@ -24,6 +24,7 @@ public class Define
     /// 버거 1개당 먹는데 걸리는 시간
     /// </summary>
     public const float EatingTimePerBurger = 0.5f;
+    public const float StackJumpPower = 2.5f;
     
     public const float GameInitialTime = 60f;
     public const float DefaultBGMVolume = 0.4f;
@@ -33,6 +34,7 @@ public class Define
     public const int MaxWaitingCustomerCount = 5;
     public const int MaxCustomerWantCount = 3;
     public const int OneMoneyBundleAmount = 100;
+    public const int StartingMoney = 300;
 
     public static readonly float[] BGMPitch = new float[] { 1.0f, 1.1f, 1.2f };
     
@@ -103,6 +105,11 @@ public class Define
         SeatWaiting,
         Eating,
         Exiting
+    }
+    public enum SpeechBubbleType
+    {
+        BurgerCount,
+        NoSeat
     }
     #endregion
 }

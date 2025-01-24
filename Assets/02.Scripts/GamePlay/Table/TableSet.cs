@@ -27,6 +27,7 @@ public class TableSet : PurchasableItem
     {
         stacker = GetComponent<ObjectStacker>();
         actionArea = GetComponent<PlayerActionArea>();
+        stacker.leftTopCornerPos = transform.position + Vector3.up * 0.5f;
             
         gameObject.SetActive(true);
         StoreManager.Instance.AddUnlockedTableSet(this);
