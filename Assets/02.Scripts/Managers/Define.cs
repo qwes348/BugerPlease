@@ -111,5 +111,13 @@ public class Define
         BurgerCount,
         NoSeat
     }
+    public enum ClerkState
+    {
+        Idle,
+        MoveToBurger,
+        MoveToCounter,
+        MoveToCleaning,
+        MoveToDumpster
+    }
     #endregion
 }

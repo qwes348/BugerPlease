@@ -17,4 +17,9 @@ public class Dumpster : MonoBehaviour
         var trash = stacker.Pop().GetComponent<Poolable>();
         Managers.Pool.Push(trash);
     }
+
+    public void PushTrashManually(Stackable trash)
+    {
+        stacker.Push(trash);
+    }
 }

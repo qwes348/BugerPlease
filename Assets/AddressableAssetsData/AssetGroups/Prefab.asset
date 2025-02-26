@@ -51,6 +51,11 @@ MonoBehaviour:
     m_SerializedLabels:
     - prefab
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: debe0ae4a89f47a43a39979fee845c80
+    m_Address: Prefab/MoneyBundleDeco
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: bce8fb1795793844c9a86a122ffb98c4, type: 2}
   m_SchemaSet:

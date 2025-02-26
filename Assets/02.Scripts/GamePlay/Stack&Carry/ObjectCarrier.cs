@@ -18,6 +18,7 @@ public class ObjectCarrier : MonoBehaviour
     #region Properties
 
     public IReadOnlyList<Stackable> CarriedObjects => carriedObjects;
+    public int Count => carriedObjects.Count;
     #endregion
 
     #region Action

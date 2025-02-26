@@ -10,7 +10,13 @@ public class StoreManager : StaticMono<StoreManager>
     [SerializeField]
     private ObjectStacker counterBurgerStack;
     [SerializeField]
+    private ObjectStacker foodPlatformStack;
+    [SerializeField]
     private ObjectStacker moneyStack;
+    [SerializeField]
+    private MoneyEffectController moneyEffect;
+    [SerializeField]
+    private Dumpster dumpster;
     
     [Header(("런타임 데이터"))]
     [SerializeField][ReadOnly]
@@ -21,11 +27,17 @@ public class StoreManager : StaticMono<StoreManager>
     private CustomerLineController customerLineController;
     private Queue<TableSet> emptyTablesQueue = new Queue<TableSet>();
     private StoreTransformPoints transformPoints;
+    private PlayerController player;
     
     #region Properties
     public CustomerLineController CustomerLineController => customerLineController;
     public ObjectStacker CounterBurgerStack => counterBurgerStack;
+    public ObjectStacker FoodPlatformStack => foodPlatformStack;
     public StoreTransformPoints TransformPoints => transformPoints;
+    public MoneyEffectController MoneyEffect => moneyEffect;
+    public PlayerController Player => player;
+    public IReadOnlyList<TableSet> UnlockedTables => unlockedTables;
+    public Dumpster Dumpster => dumpster;
     public int MoneyAmount
     {
         get => moneyAmount;
@@ -46,6 +58,7 @@ public class StoreManager : StaticMono<StoreManager>
         moneyAmount = Define.StartingMoney;
         customerLineController = GetComponent<CustomerLineController>();
         transformPoints = GetComponent<StoreTransformPoints>();
+        player = FindAnyObjectByType<PlayerController>();
     }
 
     private void Start()

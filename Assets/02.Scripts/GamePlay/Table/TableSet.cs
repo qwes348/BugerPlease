@@ -21,6 +21,7 @@ public class TableSet : PurchasableItem
     private ObjectStacker stacker;
     private PlayerActionArea actionArea;
     
+    public Define.TableState CurrentTableState => currentTableState;
     public int EmptySeatsCount => seats.FindAll(s => s.CurrentSeatState == Define.SeatState.Empty).Count;
     
     public override void OnPurchased()
@@ -119,5 +120,12 @@ public class TableSet : PurchasableItem
         
         // 빈 테이블 목록에 이 테이블을 추가
         StoreManager.Instance.OnTableEmpty(this);
+    }
+
+    // 직원이 치울때 호출하는 용도
+    // 플레이어는 PlayerActionArea를 통해서 가져감
+    public Stackable GetTrash()
+    {
+        return stacker.Count <= 0 ? null : stacker.Pop();
     }
 }

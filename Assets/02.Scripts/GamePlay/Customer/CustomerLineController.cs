@@ -43,7 +43,7 @@ public class CustomerLineController : MonoBehaviour
     {
         var newCustomer = (await Managers.Pool.PopAsync(customerAddress + Random.Range(1, customerAddressCount + 1))).GetComponent<CustomerController>();
         newCustomer.transform.position = StoreManager.Instance.TransformPoints.SpawnPoint.position;
-        newCustomer.Init(Random.Range(1, Define.MaxCustomerWantCount + 1)); // TODO: 랜덤화
+        newCustomer.Init(Random.Range(1, Define.MaxCustomerWantCount + 1)); 
         newCustomer.gameObject.SetActive(true);
         newCustomer.GoToPoint(StoreManager.Instance.TransformPoints.WaitingLinePoint.position + Vector3.forward * waitingCustomers.Count);
         waitingCustomers.Enqueue(newCustomer);
