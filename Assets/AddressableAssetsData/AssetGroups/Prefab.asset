@@ -45,6 +45,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - prefab
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bd93d7453a9b08a4ba2ef79c4901d2e6
+    m_Address: Prefab/Clerk
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - prefab
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c6625a9cd87f8084a92b9edf57516a94
     m_Address: Prefab/TableSet
     m_ReadOnly: 0
@@ -54,7 +60,8 @@ MonoBehaviour:
   - m_GUID: debe0ae4a89f47a43a39979fee845c80
     m_Address: Prefab/MoneyBundleDeco
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - prefab
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: bce8fb1795793844c9a86a122ffb98c4, type: 2}

@@ -30,9 +30,9 @@ public class PurchaseArea : MonoBehaviour
 
     private async UniTask Purchase()
     {
-        if(StoreManager.Instance.MoneyAmount < price)
+        if(Managers.Game.MoneyAmount < price)
             return;
-        StoreManager.Instance.MoneyAmount -= price;
+        Managers.Game.MoneyAmount -= price;
         
         StoreManager.Instance.MoneyEffect.StartEffect(StoreManager.Instance.Player.transform.position, transform.position);
         await UniTask.Delay(TimeSpan.FromSeconds(1f));

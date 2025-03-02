@@ -15,7 +15,6 @@ public class ClerkController : MonoBehaviour
     private NavMeshAgent agent;
     private Animator anim;
     private ObjectCarrier carrier;
-    private float moveSpeedMultiplier = 1f;
     private Transform currentMoveTarget;
     private bool skipFsmUpdateSingleFrame = false;
     
@@ -23,7 +22,7 @@ public class ClerkController : MonoBehaviour
     private const float NavMeshRadius = 0.25f;
     private const float NavMeshHeight = 1f;
     private const float NavMeshStopDistance = 1f;
-    private const float NavMeshSpeed = 2f;
+    private const float NavMeshSpeed = 0.5f;
     private const float NaveMeshAngularSpeed = 360f;
     #endregion
     
@@ -57,6 +56,11 @@ public class ClerkController : MonoBehaviour
         agent.updateRotation = false;
     }
 
+    private void Start()
+    {
+        UpdateMoveSpeed();
+    }
+
     private void Update()
     {
         anim.SetFloat(animParamMoveSpeed, agent.remainingDistance > agent.stoppingDistance ? agent.velocity.magnitude : 0f);
@@ -71,7 +75,6 @@ public class ClerkController : MonoBehaviour
         agent.radius = NavMeshRadius;
         agent.height = NavMeshHeight;
         agent.stoppingDistance = NavMeshStopDistance;
-        agent.speed = NavMeshSpeed;
         agent.angularSpeed = NaveMeshAngularSpeed;
     }
 
@@ -81,11 +84,6 @@ public class ClerkController : MonoBehaviour
         SetState(Define.ClerkState.Idle);
     }
 
-    public void GoToPoint()
-    {
-        
-    }
-
     private void RotationUpdate()
     {
         if (agent.velocity.magnitude > Mathf.Epsilon)
@@ -93,6 +91,11 @@ public class ClerkController : MonoBehaviour
             Quaternion targetRotation = Quaternion.LookRotation(agent.velocity.normalized);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
         }
+    }
+
+    public void UpdateMoveSpeed()
+    {
+        agent.speed = NavMeshSpeed * (ClerkManager.Instance.GetCurrentUpgradeLevel(Define.ClerkStatType.MoveSpeed) + 1);
     }
 
     public void SetState(Define.ClerkState state)
@@ -108,7 +111,6 @@ public class ClerkController : MonoBehaviour
         {
             case Define.ClerkState.Idle:
                 CurrentMoveTarget = null;
-                // TODO: 할일이 없을 때 예외처리 (일정 시간 후 재시도)
                 ClerkManager.Instance.FindJob(this);
                 break;
             case Define.ClerkState.MoveToBurger:
@@ -142,9 +144,19 @@ public class ClerkController : MonoBehaviour
                 RotationUpdate();
                 if (agent.remainingDistance <= agent.stoppingDistance)
                 {
-                    // TODO: carry능력만큼 들고가기
-                    var burger = StoreManager.Instance.FoodPlatformStack.Pop();
-                    carrier.PushCarryingObject(burger);
+                    if (StoreManager.Instance.FoodPlatformStack.Count <= 0)
+                    {
+                        SetState(Define.ClerkState.Idle);
+                        break;
+                    }
+                    
+                    for (int i = 0; i < (ClerkManager.Instance.GetCurrentUpgradeLevel(Define.ClerkStatType.CarryingCount) + 1); i++)
+                    {
+                        var burger = StoreManager.Instance.FoodPlatformStack.Pop();
+                        if (burger == null)
+                            break;
+                        carrier.PushCarryingObject(burger);
+                    }
                     SetState(Define.ClerkState.MoveToCounter);
                 }
                 break;
@@ -163,9 +175,14 @@ public class ClerkController : MonoBehaviour
                 RotationUpdate();
                 if (agent.remainingDistance <= agent.stoppingDistance)
                 {
-                    // TODO: null 체크
                     var dirtyTable = currentMoveTarget.GetComponent<TableSet>();
                     var trash = dirtyTable.GetTrash();
+
+                    if (trash == null)
+                    {
+                        SetState(Define.ClerkState.Idle);
+                        break;
+                    }
                     carrier.PushCarryingObject(trash);
                     SetState(Define.ClerkState.MoveToDumpster);
                 }

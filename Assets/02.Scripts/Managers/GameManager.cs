@@ -15,6 +15,8 @@ public class GameManager
     [SerializeField]
     private int level;
     [SerializeField]
+    private int moneyAmount;
+    [SerializeField]
     private Define.GameState gameState;
     [SerializeField]
     private bool isNewHighScore;
@@ -24,6 +26,7 @@ public class GameManager
     public Action<int> onScoreUpdate;
     public Action<int> onComboUpdate;
     public Action<int> onLevelUpdate;
+    public Action<int> onMoneyAmountUpdate;
     public Action<Define.GameState> onGameStateChanged;
     #endregion
     
@@ -51,6 +54,15 @@ public class GameManager
             onLevelUpdate?.Invoke(level);
         }
     }
+    public int MoneyAmount
+    {
+        get => moneyAmount;
+        set
+        {
+            moneyAmount = value;
+            onMoneyAmountUpdate?.Invoke(moneyAmount);
+        }
+    }
     public Define.GameState GameState { get => gameState;
         set
         {
@@ -71,6 +83,7 @@ public class GameManager
         combo = -1;
         level = 0;
         score = 0;
+        moneyAmount = Define.StartingMoney;
         gameState = Define.GameState.None;
         isNewHighScore = false;
     }
@@ -81,6 +94,7 @@ public class GameManager
         onScoreUpdate = null;
         onComboUpdate = null;
         onLevelUpdate = null;
+        onMoneyAmountUpdate = null;
         onGameStateChanged = null;
     }
 

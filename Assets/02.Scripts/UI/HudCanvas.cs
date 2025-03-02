@@ -13,8 +13,8 @@ public class HudCanvas : MonoBehaviour
 
     private void Start()
     {
-        OnMoneyChanged(StoreManager.Instance.MoneyAmount);
-        StoreManager.Instance.onMoneyChanged += OnMoneyChanged;
+        OnMoneyChanged(Managers.Game.MoneyAmount);
+        Managers.Game.onMoneyAmountUpdate += OnMoneyChanged;
     }
 
     private void OnMoneyChanged(int moneyAmount)

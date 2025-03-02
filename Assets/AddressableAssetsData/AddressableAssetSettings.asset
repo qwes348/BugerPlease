@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: cfebe5e3fb92234489d6c231ef5d3908
   m_currentHash:
     serializedVersion: 2
-    Hash: 28ff5a5a579b719cb27149fdf7f8d938
+    Hash: b494473d8a22b33f2db306ccdf6eeaee
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 0
   m_CatalogRequestsTimeout: 0
@@ -60,6 +60,8 @@ MonoBehaviour:
   m_overridePlayerVersion: '[UnityEditor.PlayerSettings.bundleVersion]'
   m_GroupAssets:
   - {fileID: 11400000, guid: 6da75e07b66d056498a44a55c60f4c4c, type: 2}
+  - {fileID: 11400000, guid: 12421cc5f3f79464989aa810182d124e, type: 2}
+  - {fileID: 11400000, guid: 80d2c11d84cddd24b9b55012257cddbb, type: 2}
   - {fileID: 11400000, guid: 4426520a6366a8c4ab8ddc10f446c618, type: 2}
   - {fileID: 11400000, guid: 060db33522752df4e99d6b083748ce99, type: 2}
   m_BuildSettings:
@@ -103,6 +105,9 @@ MonoBehaviour:
     - default
     - food
     - prefab
+    - ui
+    - data
+    - clerkUpgradeInfoData
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 6357373403a7a6a4985878f7d69c23cd, type: 2}

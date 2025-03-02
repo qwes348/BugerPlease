@@ -21,8 +21,6 @@ public class StoreManager : StaticMono<StoreManager>
     [Header(("런타임 데이터"))]
     [SerializeField][ReadOnly]
     private List<TableSet> unlockedTables = new List<TableSet>();
-    [SerializeField] [ReadOnly]
-    private int moneyAmount;
     
     private CustomerLineController customerLineController;
     private Queue<TableSet> emptyTablesQueue = new Queue<TableSet>();
@@ -38,15 +36,6 @@ public class StoreManager : StaticMono<StoreManager>
     public PlayerController Player => player;
     public IReadOnlyList<TableSet> UnlockedTables => unlockedTables;
     public Dumpster Dumpster => dumpster;
-    public int MoneyAmount
-    {
-        get => moneyAmount;
-        set
-        {
-            moneyAmount = value;
-            onMoneyChanged?.Invoke(moneyAmount);
-        }
-    }
     #endregion
     
     #region Actions
@@ -55,7 +44,11 @@ public class StoreManager : StaticMono<StoreManager>
 
     private void Awake()
     {
-        moneyAmount = Define.StartingMoney;
+        Managers.Game.Init();
+        // 게임시작
+        // TODO: 게임시작하는 부분 보완
+        Managers.Game.GameState = Define.GameState.Running;
+        
         customerLineController = GetComponent<CustomerLineController>();
         transformPoints = GetComponent<StoreTransformPoints>();
         player = FindAnyObjectByType<PlayerController>();

@@ -1,3 +1,4 @@
+using AYellowpaper.SerializedCollections;
 using Cysharp.Threading.Tasks;
 using NaughtyAttributes;
 using System;
@@ -8,7 +9,10 @@ using UnityEngine;
 // 점원을 소환하고 각 점원에게 명령을 내려줄 클래스
 public class ClerkManager : StaticMono<ClerkManager>
 {
+    [SerializeField][ReadOnly]
     private List<ClerkController> activatedClerks = new List<ClerkController>();
+    [SerializeField][SerializedDictionary]  // 업그레이드 레벨 관리 딕셔너리
+    private AYellowpaper.SerializedCollections.SerializedDictionary<Define.ClerkStatType, int> clerkUpgradeDict;
 
     [Button]
     public async UniTask SpawnNewClerk()    
@@ -45,5 +49,42 @@ public class ClerkManager : StaticMono<ClerkManager>
             await UniTask.Delay(TimeSpan.FromSeconds(1f));
             Debug.Log("점원 할 일 못찾음");
         }
+    }
+
+    /// <summary>
+    /// 점원 업그레이드
+    /// </summary>
+    /// <param name="statType"></param>
+    public void LevelUpClerkStat(Define.ClerkStatType statType)
+    {
+        if(clerkUpgradeDict.ContainsKey(statType))
+            clerkUpgradeDict[statType]++;
+        else
+            clerkUpgradeDict.Add(statType, 1);
+        
+        switch (statType)
+        {
+            case Define.ClerkStatType.MoveSpeed:
+                foreach (ClerkController clerk in activatedClerks)
+                {
+                    clerk.UpdateMoveSpeed();
+                }
+                break;
+            case Define.ClerkStatType.CarryingCount:
+                break;
+            case Define.ClerkStatType.HireClerk:
+                SpawnNewClerk().Forget();
+                break;
+        }
+    }
+
+    /// <summary>
+    /// 현재 업그레이드 레벨
+    /// </summary>
+    /// <param name="statType"></param>
+    /// <returns></returns>
+    public int GetCurrentUpgradeLevel(Define.ClerkStatType statType)
+    {
+        return clerkUpgradeDict.GetValueOrDefault(statType, 0);
     }
 }

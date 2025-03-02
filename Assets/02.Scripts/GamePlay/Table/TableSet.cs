@@ -126,6 +126,8 @@ public class TableSet : PurchasableItem
     // 플레이어는 PlayerActionArea를 통해서 가져감
     public Stackable GetTrash()
     {
+        if (currentTableState != Define.TableState.Used)
+            return null;
         return stacker.Count <= 0 ? null : stacker.Pop();
     }
 }

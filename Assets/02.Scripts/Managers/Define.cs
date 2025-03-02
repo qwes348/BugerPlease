@@ -37,7 +37,6 @@ public class Define
     public const int StartingMoney = 300;
 
     public static readonly float[] BGMPitch = new float[] { 1.0f, 1.1f, 1.2f };
-    
     #endregion
 
     #region enum
@@ -118,6 +117,18 @@ public class Define
         MoveToCounter,
         MoveToCleaning,
         MoveToDumpster
+    }
+    public enum ClerkStatType
+    {
+        None = -1,
+        MoveSpeed,
+        CarryingCount,
+        HireClerk
+    }
+    public enum DynamicCanvasType
+    {
+        None = -1,
+        ClerkManage
     }
     #endregion
 }
