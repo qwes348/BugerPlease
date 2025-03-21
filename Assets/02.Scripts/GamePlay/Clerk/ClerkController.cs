@@ -5,6 +5,7 @@ using System.Linq;
 using UniRx.Triggers;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Rendering;
 
 [RequireComponent(typeof(ObjectCarrier), typeof(NavMeshAgent))]
 public class ClerkController : MonoBehaviour
@@ -19,9 +20,9 @@ public class ClerkController : MonoBehaviour
     private bool skipFsmUpdateSingleFrame = false;
     
     #region Const
-    private const float NavMeshRadius = 0.25f;
+    private const float NavMeshRadius = 0.05f;
     private const float NavMeshHeight = 1f;
-    private const float NavMeshStopDistance = 1f;
+    private const float NavMeshStopDistance = 0.3f;
     private const float NavMeshSpeed = 0.5f;
     private const float NaveMeshAngularSpeed = 360f;
     #endregion
@@ -95,7 +96,25 @@ public class ClerkController : MonoBehaviour
 
     public void UpdateMoveSpeed()
     {
-        agent.speed = NavMeshSpeed * (ClerkManager.Instance.GetCurrentUpgradeLevel(Define.ClerkStatType.MoveSpeed) + 1);
+        agent.speed = NavMeshSpeed * (UpgradeManager.Instance.GetCurrentUpgradeLevel(Define.UpgradeType.MoveSpeed) + 1);
+    }
+
+    /// <summary>
+    /// 현재 치우러 가고있는 테이블이 누군가에의해 치워졌을 때
+    /// </summary>
+    private void OnDirtyTableBeCleanByOthers()
+    {
+        if (currentMoveTarget == null)
+            return;
+        if (agent.remainingDistance <= agent.stoppingDistance)  // 이 조건이 true면 현재 직원 인스턴스가 가져간거일 확률이 높음
+            return;
+        var targetTable = currentMoveTarget.GetComponent<TableSet>();
+        if (targetTable == null)
+            return;
+        
+        targetTable.onAllTrashRemoved -= OnDirtyTableBeCleanByOthers;
+        SetState(Define.ClerkState.Idle);
+        
     }
 
     public void SetState(Define.ClerkState state)
@@ -120,7 +139,11 @@ public class ClerkController : MonoBehaviour
                 CurrentMoveTarget = StoreManager.Instance.CounterBurgerStack.transform;
                 break;
             case Define.ClerkState.MoveToCleaning:
-                CurrentMoveTarget = StoreManager.Instance.UnlockedTables.First(t => t.CurrentTableState == Define.TableState.Used).transform;
+                // 쓰레기가있고 치우러가는 직원이없는 테이블을 찾음
+                var targetTable = StoreManager.Instance.UnlockedTables.First(t => t.CurrentTableState == Define.TableState.Used && t.currentCleaningClerk == null);
+                targetTable.currentCleaningClerk = this;
+                targetTable.onAllTrashRemoved += OnDirtyTableBeCleanByOthers;
+                CurrentMoveTarget = targetTable.transform;
                 break;
             case Define.ClerkState.MoveToDumpster:
                 CurrentMoveTarget = StoreManager.Instance.Dumpster.transform;
@@ -150,7 +173,7 @@ public class ClerkController : MonoBehaviour
                         break;
                     }
                     
-                    for (int i = 0; i < (ClerkManager.Instance.GetCurrentUpgradeLevel(Define.ClerkStatType.CarryingCount) + 1); i++)
+                    for (int i = 0; i < (UpgradeManager.Instance.GetCurrentUpgradeLevel(Define.UpgradeType.CarryingCount) + 1); i++)
                     {
                         var burger = StoreManager.Instance.FoodPlatformStack.Pop();
                         if (burger == null)
@@ -175,9 +198,13 @@ public class ClerkController : MonoBehaviour
                 RotationUpdate();
                 if (agent.remainingDistance <= agent.stoppingDistance)
                 {
+                    if (currentMoveTarget == null)
+                    {
+                        SetState(Define.ClerkState.Idle);
+                        break;
+                    }
                     var dirtyTable = currentMoveTarget.GetComponent<TableSet>();
                     var trash = dirtyTable.GetTrash();
-
                     if (trash == null)
                     {
                         SetState(Define.ClerkState.Idle);

@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     #region const
-    private const float BaseMoveSpeed = 3f;
+    private const float BaseMoveSpeed = 1f;
     private const float BaseRotateSpeed = 1000f;
     #endregion
     
@@ -15,14 +15,21 @@ public class PlayerController : MonoBehaviour
     private Transform cameraTransform;
     private Animator anim;
     private Rigidbody rb;
-    
-    private float moveSpeedMultiplier = 1f;
+    private ObjectCarrier foodCarrier;
+
+    private float moveSpeedAdder = 0f;
 
     private void Awake()
     {
         cameraTransform = Camera.main.transform;
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
+        foodCarrier = GetComponent<ObjectCarrier>();
+    }
+
+    private void Start()
+    {
+        UpgradeManager.Instance.onPlayerUpgrade += OnPlayerUpgraded;
     }
 
     private void FixedUpdate()
@@ -47,6 +54,19 @@ public class PlayerController : MonoBehaviour
         Quaternion targetRotation = Quaternion.LookRotation(moveDir);
         rb.MoveRotation(Quaternion.RotateTowards(rb.rotation, targetRotation, BaseRotateSpeed * Time.deltaTime));
         // 자연스러운 이동을 위해 플레이어는 앞으로만 이동
-        rb.MovePosition(rb.position + transform.forward * (BaseMoveSpeed * Time.fixedDeltaTime));
+        rb.MovePosition(rb.position + transform.forward * ((BaseMoveSpeed + moveSpeedAdder) * Time.fixedDeltaTime));
+    }
+
+    private void OnPlayerUpgraded(Define.UpgradeType upgradedType)
+    {
+        switch (upgradedType)
+        {
+            case Define.UpgradeType.P_MoveSpeed:
+                moveSpeedAdder = UpgradeManager.Instance.GetCurrentUpgradeLevel(Define.UpgradeType.P_MoveSpeed) * 0.5f;
+                break;
+            case Define.UpgradeType.P_CarryingCount:
+                foodCarrier.CarryableCountAdder = UpgradeManager.Instance.GetCurrentUpgradeLevel(Define.UpgradeType.P_CarryingCount);
+                break;
+        }
     }
 }

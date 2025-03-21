@@ -11,8 +11,11 @@ public class ClerkManager : StaticMono<ClerkManager>
 {
     [SerializeField][ReadOnly]
     private List<ClerkController> activatedClerks = new List<ClerkController>();
-    [SerializeField][SerializedDictionary]  // 업그레이드 레벨 관리 딕셔너리
-    private AYellowpaper.SerializedCollections.SerializedDictionary<Define.ClerkStatType, int> clerkUpgradeDict;
+
+    private void Start()
+    {
+        UpgradeManager.Instance.onClerkUpgrade += OnLevelUpClerkStat;
+    }
 
     [Button]
     public async UniTask SpawnNewClerk()    
@@ -29,7 +32,7 @@ public class ClerkManager : StaticMono<ClerkManager>
         while (true)
         {
             // 더러운 테이블이 있을 때
-            if (StoreManager.instance.UnlockedTables.Any(t => t.CurrentTableState == Define.TableState.Used))
+            if (StoreManager.instance.UnlockedTables.Any(t => t.CurrentTableState == Define.TableState.Used && t.currentCleaningClerk == null))
             {
                 Debug.Log("점원 테이블 청소하러 이동");
                 // 더러운 테이블로 이동 명령
@@ -55,36 +58,21 @@ public class ClerkManager : StaticMono<ClerkManager>
     /// 점원 업그레이드
     /// </summary>
     /// <param name="statType"></param>
-    public void LevelUpClerkStat(Define.ClerkStatType statType)
+    public void OnLevelUpClerkStat(Define.UpgradeType statType)
     {
-        if(clerkUpgradeDict.ContainsKey(statType))
-            clerkUpgradeDict[statType]++;
-        else
-            clerkUpgradeDict.Add(statType, 1);
-        
         switch (statType)
         {
-            case Define.ClerkStatType.MoveSpeed:
+            case Define.UpgradeType.MoveSpeed:
                 foreach (ClerkController clerk in activatedClerks)
                 {
                     clerk.UpdateMoveSpeed();
                 }
                 break;
-            case Define.ClerkStatType.CarryingCount:
+            case Define.UpgradeType.CarryingCount:
                 break;
-            case Define.ClerkStatType.HireClerk:
+            case Define.UpgradeType.HireClerk:
                 SpawnNewClerk().Forget();
                 break;
         }
-    }
-
-    /// <summary>
-    /// 현재 업그레이드 레벨
-    /// </summary>
-    /// <param name="statType"></param>
-    /// <returns></returns>
-    public int GetCurrentUpgradeLevel(Define.ClerkStatType statType)
-    {
-        return clerkUpgradeDict.GetValueOrDefault(statType, 0);
     }
 }

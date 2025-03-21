@@ -118,17 +118,22 @@ public class Define
         MoveToCleaning,
         MoveToDumpster
     }
-    public enum ClerkStatType
+    public enum UpgradeType
     {
         None = -1,
         MoveSpeed,
         CarryingCount,
-        HireClerk
+        HireClerk,
+        P_MoveSpeed = 11,
+        P_CarryingCount,
+        P_FoodMakeSpeed,
+        P_FoodCounterCapacity
     }
     public enum DynamicCanvasType
     {
         None = -1,
-        ClerkManage
+        ClerkManage,
+        PlayerUpgrade
     }
     #endregion
 }

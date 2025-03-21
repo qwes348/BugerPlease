@@ -16,7 +16,13 @@ MonoBehaviour:
   m_GUID: 4bec3bcb5ae8deb4ea1bf3cc7dc2dba1
   m_SerializeEntries:
   - m_GUID: 7011e5bf8e37fc94b884543187b9897c
-    m_Address: Prefab/ClerkCanvas
+    m_Address: Prefab/ClerkUpgradeCanvas
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ui
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b137787af05608146b0f57f05125981b
+    m_Address: Prefab/PlayerUpgradeCanvas
     m_ReadOnly: 0
     m_SerializedLabels:
     - ui

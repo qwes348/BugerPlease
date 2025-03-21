@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: cfebe5e3fb92234489d6c231ef5d3908
   m_currentHash:
     serializedVersion: 2
-    Hash: b494473d8a22b33f2db306ccdf6eeaee
+    Hash: 00000000000000000000000000000000
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 0
   m_CatalogRequestsTimeout: 0
@@ -108,6 +108,7 @@ MonoBehaviour:
     - ui
     - data
     - clerkUpgradeInfoData
+    - playerUpgradeInfoData
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 6357373403a7a6a4985878f7d69c23cd, type: 2}

@@ -24,7 +24,7 @@ public class CustomerController : MonoBehaviour
     #endregion
     
     #region Const
-    private const float NavMeshRadius = 0.3f;
+    private const float NavMeshRadius = 0.05f;
     private const float NavMeshHeight = 1f;
     private const float NavMeshStopDistance = 0.2f;
     private const float NavMeshSpeed = 2f;

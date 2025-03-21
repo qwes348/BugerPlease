@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d1ad4a16ab9be348bb35615cd07664b, type: 3}
   m_Name: HireClerk
   m_EditorClassIdentifier: 
+  uiTextName: "\uC54C\uBC14 \uACE0\uC6A9"
   upgradeType: 2
   maxLevel: 2
   startPrice: 300

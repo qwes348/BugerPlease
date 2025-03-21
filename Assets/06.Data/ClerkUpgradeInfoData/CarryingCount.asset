@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d1ad4a16ab9be348bb35615cd07664b, type: 3}
   m_Name: CarryingCount
   m_EditorClassIdentifier: 
+  uiTextName: "\uC6B4\uBC18 \uB2A5\uB825"
   upgradeType: 1
   maxLevel: 5
   startPrice: 250

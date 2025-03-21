@@ -40,7 +40,7 @@ public class MultipleColorTintButton : Button
                 color = Color.black;
                 break;
         }
-
+        
         if (gameObject.activeInHierarchy)
         {
             switch (transition)

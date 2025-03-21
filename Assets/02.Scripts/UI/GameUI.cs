@@ -2,6 +2,7 @@ using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 public class GameUI : StaticMono<GameUI>
 {
@@ -12,8 +13,13 @@ public class GameUI : StaticMono<GameUI>
     [SerializeField]
     private HudCanvas hudCanvas;
 
+    [Header("어드레서블 캔버스")]
+    [SerializeField]
+    private SerializedDictionary<Define.DynamicCanvasType, AssetReferenceGameObject> dynamicCanvasesDict;
+    
+
     // 비동기적으로 생성/파괴하는 캔버스를 보관할 딕셔너리
-    private Dictionary<Define.DynamicCanvasType, DynamicCanvas> dynamicCanvases = new Dictionary<Define.DynamicCanvasType, DynamicCanvas>();
+    private Dictionary<Define.DynamicCanvasType, DynamicCanvas> activeDynamicCanvases = new Dictionary<Define.DynamicCanvasType, DynamicCanvas>();
     
     public PlayerInputCanvas InputCanvas => inputCanvas;
     public SpeechBubbleCanvas SpeechBubbleCanvas => speechBubbleCanvas;
@@ -21,32 +27,38 @@ public class GameUI : StaticMono<GameUI>
 
     public async UniTask<DynamicCanvas> GetDynamicCanvas(Define.DynamicCanvasType canvasType)
     {
-        if(dynamicCanvases.TryGetValue(canvasType, out DynamicCanvas canvas))
+        if(activeDynamicCanvases.TryGetValue(canvasType, out DynamicCanvas canvas))
             return canvas;
         
-        await ActiveDynamicCanvas(canvasType, true);
-        return dynamicCanvases[canvasType];
+        await SetActiveDynamicCanvas(canvasType, true);
+        return activeDynamicCanvases[canvasType];
     }
     
-    public async UniTask ActiveDynamicCanvas(Define.DynamicCanvasType canvasType, bool active)
+    public async UniTask SetActiveDynamicCanvas(Define.DynamicCanvasType canvasType, bool active)
     {
+        dynamicCanvasesDict.TryGetValue(canvasType, out AssetReferenceGameObject addGo);
+        if (addGo == null)
+        {
+            Debug.LogError($"다이나믹 캔버스 어드레서블 등록 안됨: {canvasType.ToString()}");
+            return;
+        }
+        
         if (active)
         {
-            string address = string.Empty;
-            switch (canvasType)
-            {
-                case Define.DynamicCanvasType.ClerkManage:
-                    address = "Prefab/ClerkCanvas";
-                    break;
-            }
-
-            var canvas = await Managers.Resource.InstantiateAsset<DynamicCanvas>(address);
-            dynamicCanvases.Add(canvasType, canvas);
+            var canvas = await Managers.Resource.InstantiateAsset<DynamicCanvas>(addGo);
+            activeDynamicCanvases.Add(canvasType, canvas);
         }
         else
         {
-            Destroy(dynamicCanvases[canvasType].gameObject);
-            dynamicCanvases.Remove(canvasType);
+            Destroy(activeDynamicCanvases[canvasType].gameObject);
+            activeDynamicCanvases.Remove(canvasType);
         }
+    }
+
+    public bool IsActiveDynamicCanvas(Define.DynamicCanvasType canvasType)
+    {
+        return activeDynamicCanvases.ContainsKey(canvasType) &&
+               activeDynamicCanvases[canvasType] != null &&
+               activeDynamicCanvases[canvasType].gameObject.activeSelf;
     }
 }

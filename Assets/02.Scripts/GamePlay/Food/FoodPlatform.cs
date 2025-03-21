@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class FoodPlatform : MonoBehaviour
 {
+    // 최대 음식저장용량 기본값
     private const int baseStackSize = 4;
     private ObjectStacker stacker;
 
-    private int StackSize => baseStackSize; // TODO: 업그레이드 구현후에 추각 공간 더해서 리턴
+    private int StackSize => baseStackSize + UpgradeManager.Instance.GetCurrentUpgradeLevel(Define.UpgradeType.P_FoodCounterCapacity);
     public bool IsCanStackMore => stacker.Count < StackSize;
     public int FoodCount => stacker.Count;
 

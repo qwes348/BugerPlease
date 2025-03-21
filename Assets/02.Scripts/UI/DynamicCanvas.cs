@@ -14,6 +14,6 @@ public class DynamicCanvas : MonoBehaviour
     
     protected virtual void DestroyCanvas()
     {
-        GameUI.Instance.ActiveDynamicCanvas(canvasType, false).Forget();
+        GameUI.Instance.SetActiveDynamicCanvas(canvasType, false).Forget();
     }
 }

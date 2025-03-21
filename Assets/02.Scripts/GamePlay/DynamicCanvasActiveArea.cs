@@ -9,6 +9,8 @@ public class DynamicCanvasActiveArea : MonoBehaviour
 {
     [SerializeField]
     private Define.DynamicCanvasType canvasType = Define.DynamicCanvasType.None;
+    [SerializeField]
+    private bool destroyCanvasWhenOutArea = true;
     
     private PlayerActionArea actionArea;
 
@@ -21,8 +23,19 @@ public class DynamicCanvasActiveArea : MonoBehaviour
     {
         actionArea.OnPlayerInArea += UniTaskHelper.Action(async (PlayerController pc) =>
         {
+            if (GameUI.Instance.IsActiveDynamicCanvas(canvasType))
+                return;
             var canvas = await GameUI.Instance.GetDynamicCanvas(canvasType);
             canvas.ActiveCanvas(true);
         });
+
+        if(destroyCanvasWhenOutArea)
+        {
+            actionArea.OnPlayerOutArea += pc =>
+            {
+                if(GameUI.Instance.IsActiveDynamicCanvas(canvasType))
+                    GameUI.Instance.SetActiveDynamicCanvas(canvasType, false);
+            };
+        }
     }
 }

@@ -2,6 +2,7 @@ using Cysharp.Threading.Tasks;
 using NaughtyAttributes;
 using System;
 using System.Collections.Generic;
+using UnityEditor.Analytics;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -60,6 +61,17 @@ public class StoreManager : StaticMono<StoreManager>
         OnGameStart();
     }
 
+    private void Update()
+    {
+        if (Managers.Game.GameState != Define.GameState.Running)
+            return;
+        
+        if (Input.GetKeyDown(KeyCode.BackQuote))
+        {
+            AddMoneyDebug();
+        }
+    }
+
     public void OnGameStart()
     {
         customerLineController.NextOrderRequest().Forget();
@@ -99,5 +111,11 @@ public class StoreManager : StaticMono<StoreManager>
             moneyBundle.gameObject.SetActive(true);
             moneyStack.Push(moneyBundle);
         }
+    }
+
+    [Button]
+    public void AddMoneyDebug()
+    {
+        Managers.Game.MoneyAmount += 500;
     }
 }

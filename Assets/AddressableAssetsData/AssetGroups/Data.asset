@@ -29,12 +29,36 @@ MonoBehaviour:
     - clerkUpgradeInfoData
     - data
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a06e9beeb004ecd42b0b991931833089
+    m_Address: Data/FoodCounterCapacity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - playerUpgradeInfoData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a56afa15eeddfe94482954e2711424bf
+    m_Address: Data/CarryingCount
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - playerUpgradeInfoData
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c6b8afcb33d95a4488e476d98c8f7ef1
     m_Address: Data/CarryingCount
     m_ReadOnly: 0
     m_SerializedLabels:
     - clerkUpgradeInfoData
     - data
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ca860a76550da9d4194cc363f74e6d38
+    m_Address: Data/MoveSpeed
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - playerUpgradeInfoData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d64696df962518240aff45503e190a06
+    m_Address: Data/FoodMakeSpeed
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - playerUpgradeInfoData
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: bce8fb1795793844c9a86a122ffb98c4, type: 2}

@@ -24,8 +24,6 @@ public class GameManager
     #region 이벤트
     public Action<float> onTimeUpdate;
     public Action<int> onScoreUpdate;
-    public Action<int> onComboUpdate;
-    public Action<int> onLevelUpdate;
     public Action<int> onMoneyAmountUpdate;
     public Action<Define.GameState> onGameStateChanged;
     #endregion
@@ -39,21 +37,6 @@ public class GameManager
         } 
     }
     public int Score => score;
-    public int Combo { get => combo;
-        set
-        {
-            combo = value;
-            onComboUpdate?.Invoke(combo);
-        }
-        
-    }
-    public int Level { get => level;
-        set
-        {
-            level = value;
-            onLevelUpdate?.Invoke(level);
-        }
-    }
     public int MoneyAmount
     {
         get => moneyAmount;
@@ -92,8 +75,6 @@ public class GameManager
     {
         onTimeUpdate = null;
         onScoreUpdate = null;
-        onComboUpdate = null;
-        onLevelUpdate = null;
         onMoneyAmountUpdate = null;
         onGameStateChanged = null;
     }

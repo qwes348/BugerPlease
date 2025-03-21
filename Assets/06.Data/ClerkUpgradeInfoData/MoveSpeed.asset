@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d1ad4a16ab9be348bb35615cd07664b, type: 3}
   m_Name: MoveSpeed
   m_EditorClassIdentifier: 
+  uiTextName: "\uC774\uB3D9 \uC18D\uB3C4"
   upgradeType: 0
   maxLevel: 5
   startPrice: 250

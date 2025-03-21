@@ -11,14 +11,14 @@ public class ObjectCarrier : MonoBehaviour
     [SerializeField]
     private Transform carrierTransform;
     
-    #region Private
     private List<Stackable> carriedObjects = new List<Stackable>();
-    #endregion
+    private int carryableCountAdder = 0;
     
     #region Properties
 
     public IReadOnlyList<Stackable> CarriedObjects => carriedObjects;
     public int Count => carriedObjects.Count;
+    public int CarryableCountAdder { get; set; }
     #endregion
 
     #region Action
@@ -27,12 +27,12 @@ public class ObjectCarrier : MonoBehaviour
     #endregion    
     
     #region Const
-    private const int BaseCarryableCount = 10;   // TODO: 업그레이드 구현한다면 이 값에 +해서 쓰기
+    private const int BaseCarryableCount = 1;   // TODO: 업그레이드 구현한다면 이 값에 +해서 쓰기
     private const float SpaceY = 0.14f;
     private readonly Color gizmoColor = new Color(0f, 1f, 0f, 0.5f);
     #endregion
     
-    public bool IsCanCarryMore => carriedObjects.Count < BaseCarryableCount;
+    public bool IsCanCarryMore => carriedObjects.Count < BaseCarryableCount + CarryableCountAdder;
 
     [Button]
     public void TestAddCarryingObject()
@@ -45,7 +45,7 @@ public class ObjectCarrier : MonoBehaviour
 
     public void PushCarryingObject(Stackable newCarried)
     {
-        if (carriedObjects.Count >= BaseCarryableCount)
+        if (!IsCanCarryMore)
             return;
         
         newCarried.transform.SetParent(carrierTransform);

@@ -11,8 +11,9 @@ public class BurgerGrill : FoodFactory
 
     private const float animCoolTime = 3f;
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         BurgerPattyAnim().Forget();
     }
 

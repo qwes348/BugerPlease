@@ -16,13 +16,22 @@ public class TableSet : PurchasableItem
     private List<CustomerController> currentUsingCustomers;
     [SerializeField][ReadOnly]
     private Define.TableState currentTableState;
+    [ReadOnly]
+    public ClerkController currentCleaningClerk;    // 현재 이 테이블을 청소하러오는 직원
 
     private int arrivedCustomersCount;
     private ObjectStacker stacker;
     private PlayerActionArea actionArea;
     
+    #region Actions
+
+    public Action onAllTrashRemoved;
+    #endregion
+    
+    #region Properties
     public Define.TableState CurrentTableState => currentTableState;
     public int EmptySeatsCount => seats.FindAll(s => s.CurrentSeatState == Define.SeatState.Empty).Count;
+    #endregion
     
     public override void OnPurchased()
     {
@@ -47,6 +56,7 @@ public class TableSet : PurchasableItem
         currentTableState = Define.TableState.Empty;
         seats.ForEach(seat => seat.SetSeatState(Define.SeatState.Empty));
         arrivedCustomersCount = 0;
+        currentCleaningClerk = null;
     }
 
     public TableSeat AssignSeat(CustomerController customer)
@@ -116,6 +126,7 @@ public class TableSet : PurchasableItem
     private void OnTrashRemoved()
     {
         stacker.onEmpty -= OnTrashRemoved;
+        onAllTrashRemoved?.Invoke();
         Init();
         
         // 빈 테이블 목록에 이 테이블을 추가
