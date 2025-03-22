@@ -25,6 +25,7 @@ public class GameManager
     public Action<float> onTimeUpdate;
     public Action<int> onScoreUpdate;
     public Action<int> onMoneyAmountUpdate;
+    public Action<int> onMoneyAdded;
     public Action<Define.GameState> onGameStateChanged;
     #endregion
     
@@ -43,6 +44,7 @@ public class GameManager
         set
         {
             moneyAmount = value;
+            onMoneyAdded?.Invoke(value);
             onMoneyAmountUpdate?.Invoke(moneyAmount);
         }
     }
@@ -75,7 +77,10 @@ public class GameManager
     {
         onTimeUpdate = null;
         onScoreUpdate = null;
+        onTimeUpdate = null;
+        onScoreUpdate = null;
         onMoneyAmountUpdate = null;
+        onMoneyAdded = null;
         onGameStateChanged = null;
     }
 

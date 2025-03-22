@@ -95,6 +95,8 @@ public class CustomerController : MonoBehaviour
         while (agent.remainingDistance > agent.stoppingDistance || StoreManager.Instance.CounterBurgerStack.Count < wantBurgerCount)
         {
             await UniTask.Yield();
+            if (Managers.Game.GameState != Define.GameState.Running)
+                return;
         }
         for (int i = 0; i < wantBurgerCount; i++)
         {
@@ -111,6 +113,9 @@ public class CustomerController : MonoBehaviour
         GameUI.Instance.SpeechBubbleCanvas.ActiveBubble(this, Define.SpeechBubbleType.NoSeat);
         while (true)
         {
+            if (Managers.Game.GameState != Define.GameState.Running)
+                return;
+            
             if (StoreManager.Instance.TryAssignSeat(this))
             {
                 GameUI.Instance.SpeechBubbleCanvas.Clear();
@@ -125,6 +130,10 @@ public class CustomerController : MonoBehaviour
 
     private async UniTask EatingSequence()
     {
+        Managers.Game.AddScore(Define.Score_CustomerStartEating * wantBurgerCount);
+        StoreManager.Instance.SoldCustomerCount++;
+        StoreManager.Instance.SoldBurgerCount += wantBurgerCount;
+     
         // 내 자리로 이동
         GoToPoint(MyTableSeat.transform.position);
         await UniTask.Yield();
@@ -132,6 +141,9 @@ public class CustomerController : MonoBehaviour
         // 이동 완료까지 대기
         while (agent.remainingDistance > agent.stoppingDistance)
         {
+            if (Managers.Game.GameState != Define.GameState.Running)
+                return;
+            
             // 도착하기 전까지만 회전 업데이트
             RotationUpdate();
             await UniTask.Yield();
@@ -153,6 +165,9 @@ public class CustomerController : MonoBehaviour
 
         while (agent.remainingDistance > agent.stoppingDistance)
         {
+            if (Managers.Game.GameState != Define.GameState.Running)
+                return;
+            
             await UniTask.Yield();
         }
         

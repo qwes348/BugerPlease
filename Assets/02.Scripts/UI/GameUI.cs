@@ -12,6 +12,8 @@ public class GameUI : StaticMono<GameUI>
     private SpeechBubbleCanvas speechBubbleCanvas;
     [SerializeField]
     private HudCanvas hudCanvas;
+    [SerializeField]
+    private GameEndCanvas gameEndCanvas;
 
     [Header("어드레서블 캔버스")]
     [SerializeField]
@@ -24,6 +26,11 @@ public class GameUI : StaticMono<GameUI>
     public PlayerInputCanvas InputCanvas => inputCanvas;
     public SpeechBubbleCanvas SpeechBubbleCanvas => speechBubbleCanvas;
     public HudCanvas HudCanvas => hudCanvas;
+
+    private void Start()
+    {
+        Managers.Game.onGameStateChanged += OnGameStateChanged;
+    }
 
     public async UniTask<DynamicCanvas> GetDynamicCanvas(Define.DynamicCanvasType canvasType)
     {
@@ -60,5 +67,14 @@ public class GameUI : StaticMono<GameUI>
         return activeDynamicCanvases.ContainsKey(canvasType) &&
                activeDynamicCanvases[canvasType] != null &&
                activeDynamicCanvases[canvasType].gameObject.activeSelf;
+    }
+
+    private void OnGameStateChanged(Define.GameState gameState)
+    {
+        if (gameState != Define.GameState.GameOver)
+            return;
+        
+        hudCanvas.gameObject.SetActive(false);
+        gameEndCanvas.SetActiveCanvas(true);
     }
 }

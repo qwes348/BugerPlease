@@ -2,6 +2,7 @@ using Cysharp.Threading.Tasks;
 using NaughtyAttributes;
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor.Analytics;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -28,6 +29,10 @@ public class StoreManager : StaticMono<StoreManager>
     private StoreTransformPoints transformPoints;
     private PlayerController player;
     
+    private int soldCustomerCount;
+    private int soldBurgerCount;
+    private int totalSales;
+    
     #region Properties
     public CustomerLineController CustomerLineController => customerLineController;
     public ObjectStacker CounterBurgerStack => counterBurgerStack;
@@ -37,6 +42,9 @@ public class StoreManager : StaticMono<StoreManager>
     public PlayerController Player => player;
     public IReadOnlyList<TableSet> UnlockedTables => unlockedTables;
     public Dumpster Dumpster => dumpster;
+    public int SoldCustomerCount { get; set; }
+    public int SoldBurgerCount { get; set; }
+    public int TotalSales => totalSales;
     #endregion
     
     #region Actions
@@ -45,20 +53,12 @@ public class StoreManager : StaticMono<StoreManager>
 
     private void Awake()
     {
-        Managers.Game.Init();
-        // 게임시작
-        // TODO: 게임시작하는 부분 보완
-        Managers.Game.GameState = Define.GameState.Running;
+        Managers.Game.onGameStateChanged += OnGameStateChanged;
+        Managers.Game.onMoneyAdded += OnMoneyAdded;
         
         customerLineController = GetComponent<CustomerLineController>();
         transformPoints = GetComponent<StoreTransformPoints>();
         player = FindAnyObjectByType<PlayerController>();
-    }
-
-    private void Start()
-    {
-        // TODO: 임시
-        OnGameStart();
     }
 
     private void Update()
@@ -69,6 +69,25 @@ public class StoreManager : StaticMono<StoreManager>
         if (Input.GetKeyDown(KeyCode.BackQuote))
         {
             AddMoneyDebug();
+        }
+    }
+
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        Managers.Game.onGameStateChanged -= OnGameStateChanged;
+        Managers.Game.onMoneyAdded -= OnMoneyAdded;
+    }
+
+    private void OnGameStateChanged(Define.GameState state)
+    {
+        switch (state)
+        {
+            case Define.GameState.Running:
+                OnGameStart();
+                break;
+            case Define.GameState.GameOver:
+                break;
         }
     }
 
@@ -117,5 +136,12 @@ public class StoreManager : StaticMono<StoreManager>
     public void AddMoneyDebug()
     {
         Managers.Game.MoneyAmount += 500;
+    }
+
+    private void OnMoneyAdded(int value)
+    {
+        if (value < 0)
+            return;
+        totalSales += value;
     }
 }

@@ -52,8 +52,10 @@ public class CustomerLineController : MonoBehaviour
     [Button]
     public async UniTask NextOrderRequest()
     {
-        if(waitingCustomers.Count == 0)
-            await SpawnNewCustomer();
+        // if(waitingCustomers.Count == 0)
+        //     await SpawnNewCustomer();
+        while (waitingCustomers.Count <= 0)
+            await UniTask.Delay(TimeSpan.FromSeconds(0.5f));
         
         currentOrderingCustomer = waitingCustomers.Dequeue();
         currentOrderingCustomer.SetState(Define.CustomerState.Ordering);

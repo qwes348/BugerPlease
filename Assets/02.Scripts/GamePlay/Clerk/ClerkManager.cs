@@ -15,6 +15,7 @@ public class ClerkManager : StaticMono<ClerkManager>
     private void Start()
     {
         UpgradeManager.Instance.onClerkUpgrade += OnLevelUpClerkStat;
+        Managers.Game.onGameStateChanged += OnGameStateChanged;
     }
 
     [Button]
@@ -31,6 +32,9 @@ public class ClerkManager : StaticMono<ClerkManager>
     {
         while (true)
         {
+            if (Managers.Game.GameState != Define.GameState.Running)
+                break;
+            
             // 더러운 테이블이 있을 때
             if (StoreManager.instance.UnlockedTables.Any(t => t.CurrentTableState == Define.TableState.Used && t.currentCleaningClerk == null))
             {
@@ -74,5 +78,13 @@ public class ClerkManager : StaticMono<ClerkManager>
                 SpawnNewClerk().Forget();
                 break;
         }
+    }
+
+    public void OnGameStateChanged(Define.GameState gameState)
+    {
+        if (gameState != Define.GameState.GameOver)
+            return;
+        
+        activatedClerks.ForEach(c => c.SetState(Define.ClerkState.Idle));
     }
 }

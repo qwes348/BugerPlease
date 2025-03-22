@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     #region const
-    private const float BaseMoveSpeed = 1f;
+    private const float BaseMoveSpeed = 1.5f;
     private const float BaseRotateSpeed = 1000f;
     #endregion
     
