@@ -26,7 +26,7 @@ public class Define
     public const float EatingTimePerBurger = 0.5f;
     public const float StackJumpPower = 2.5f;
     
-    public const float GameInitialTime = 180f;
+    public const float GameInitialTime = 30f;
     public const float DefaultBGMVolume = 0.4f;
     public const float DefaultSfxVolume = 0.5f;
     
@@ -36,6 +36,7 @@ public class Define
     public const int OneMoneyBundleAmount = 100;
     public const int StartingMoney = 300;
     public const int Score_CustomerStartEating = 1000;
+    public const int ExtraTimeItemValue = 30;
 
     public static readonly float[] BGMPitch = new float[] { 1.0f, 1.1f, 1.2f };
     #endregion
@@ -43,10 +44,9 @@ public class Define
     #region enum
     public enum Scene
     {
-        Title,
+        MainMenu,
         Game,
         Loading,
-        Score
     }
     public enum GameState
     {
@@ -135,6 +135,11 @@ public class Define
         None = -1,
         ClerkManage,
         PlayerUpgrade
+    }
+    public enum FieldItemType
+    {
+        None = -1,
+        ExtraTime
     }
     #endregion
 }

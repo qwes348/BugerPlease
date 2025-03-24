@@ -11,7 +11,7 @@ public class HudCanvas : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI scoreText;
     [SerializeField]
-    private Image timerImage;
+    private SlicedFilledImage timerImage;
     
     private int lastMoneyAmount;
     private Tweener runningTween;

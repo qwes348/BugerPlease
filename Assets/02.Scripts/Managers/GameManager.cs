@@ -52,6 +52,11 @@ public class GameManager
         set
         {
             gameState = value;
+            if (value == Define.GameState.GameOver && isNewHighScore)
+            {
+                Managers.SaveLoad.localSaveData.HighScore = score;
+                Managers.SaveLoad.Save();
+            }
             onGameStateChanged?.Invoke(value);
         }
     }
@@ -88,5 +93,8 @@ public class GameManager
     {
         score += add;
         onScoreUpdate?.Invoke(score);
+        
+        if(score > Managers.SaveLoad.localSaveData.HighScore)
+            isNewHighScore = true;
     }
 }

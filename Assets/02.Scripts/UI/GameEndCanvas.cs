@@ -10,6 +10,8 @@ public class GameEndCanvas : MonoBehaviour
     private RectTransform notifyTextTransform;
     [SerializeField]
     private GameObject panelObject;
+    [SerializeField]
+    private RectTransform highScoreIconTransform;
     
     [Header("텍스트들")]
     [SerializeField]
@@ -54,6 +56,7 @@ public class GameEndCanvas : MonoBehaviour
         notifyTextTransform.rotation = Quaternion.Euler(0, 0, 0);
         notifyTextTransform.gameObject.SetActive(true);
         panelObject.SetActive(false);
+        highScoreIconTransform.gameObject.SetActive(false);
         var panelRect = panelObject.GetComponent<RectTransform>();
         float panelOriginY = panelRect.anchoredPosition.y;
         panelRect.anchoredPosition = new Vector2(0, (Screen.height + panelRect.sizeDelta.y) * -1f);
@@ -71,9 +74,32 @@ public class GameEndCanvas : MonoBehaviour
 
     private void InitResult()
     {
-        scoreText.text = Managers.Game.Score.ToString("N0");
-        customerCountText.text = StoreManager.Instance.SoldCustomerCount.ToString("N0");
-        burgerCountText.text = StoreManager.Instance.SoldBurgerCount.ToString("N0");
-        salesText.text = StoreManager.Instance.TotalSales.ToString("N0");
+        DOVirtual.Int(0, Managers.Game.Score, 1f, x => scoreText.text = x.ToString("N0")).OnComplete(() =>
+        {
+            if (Managers.Game.IsNewHighScore)
+            {
+                HighScoreTween();
+            }
+        });
+        DOVirtual.Int(0, StoreManager.Instance.SoldCustomerCount, 1f, x => customerCountText.text = x.ToString("N0"));
+        DOVirtual.Int(0, StoreManager.Instance.SoldBurgerCount, 1f, x => burgerCountText.text = x.ToString("N0"));
+        DOVirtual.Int(0, StoreManager.Instance.TotalSales, 1f, x => salesText.text = x.ToString("N0"));
+    }
+
+    [Button]
+    public void HighScoreTween()
+    {
+        highScoreIconTransform.gameObject.SetActive(true);
+        highScoreIconTransform.transform.DORotate(Vector3.up * 720f, 1f, RotateMode.FastBeyond360).SetEase(Ease.OutQuad);
+    }
+
+    public void Retry()
+    {
+        Managers.Scene.LoadSceneViaLoading(Define.Scene.Game);
+    }
+
+    public void ToMainMenu()
+    {
+        Managers.Scene.LoadSceneViaLoading(Define.Scene.MainMenu);
     }
 }

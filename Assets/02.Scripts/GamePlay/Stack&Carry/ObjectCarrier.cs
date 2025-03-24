@@ -27,7 +27,7 @@ public class ObjectCarrier : MonoBehaviour
     #endregion    
     
     #region Const
-    private const int BaseCarryableCount = 1;   // TODO: 업그레이드 구현한다면 이 값에 +해서 쓰기
+    private const int BaseCarryableCount = 1;   
     private const float SpaceY = 0.14f;
     private readonly Color gizmoColor = new Color(0f, 1f, 0f, 0.5f);
     #endregion

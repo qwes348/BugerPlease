@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneManagerYsms
+public class SceneManagerBurgerPlease
 {
     private Define.Scene nextSceneType;
     
@@ -12,6 +12,7 @@ public class SceneManagerYsms
 
     public void LoadScene(Define.Scene sceneType)
     {
+        Managers.Game.Clear();
         CurrentScene.Clear();
         SceneManager.LoadScene(GetSceneName(sceneType));
     }
@@ -25,6 +26,7 @@ public class SceneManagerYsms
 
     public AsyncOperation LoadSceneAsync(Define.Scene sceneType)
     {
+        Managers.Game.Clear();
         CurrentScene.Clear();
         return SceneManager.LoadSceneAsync(GetSceneName(sceneType));
     }

@@ -42,6 +42,7 @@ public class CustomerController : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
         objectCarrier = GetComponent<ObjectCarrier>();
+        objectCarrier.CarryableCountAdder = 99;
 
         agent.updateRotation = false;
     }
