@@ -73,6 +73,10 @@ public class ClerkManager : StaticMono<ClerkManager>
                 }
                 break;
             case Define.UpgradeType.CarryingCount:
+                foreach (var clerk in activatedClerks)
+                {
+                    clerk.UpdateCarryingCapacity();
+                }
                 break;
             case Define.UpgradeType.HireClerk:
                 SpawnNewClerk().Forget();

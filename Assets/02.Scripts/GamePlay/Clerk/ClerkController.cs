@@ -57,11 +57,6 @@ public class ClerkController : MonoBehaviour
         agent.updateRotation = false;
     }
 
-    private void Start()
-    {
-        UpdateMoveSpeed();
-    }
-
     private void Update()
     {
         anim.SetFloat(animParamMoveSpeed, agent.remainingDistance > agent.stoppingDistance ? agent.velocity.magnitude : 0f);
@@ -81,6 +76,8 @@ public class ClerkController : MonoBehaviour
 
     public async UniTask Init()
     {
+        UpdateMoveSpeed();
+        UpdateCarryingCapacity();
         await UniTask.Yield();
         SetState(Define.ClerkState.Idle);
     }
@@ -97,6 +94,11 @@ public class ClerkController : MonoBehaviour
     public void UpdateMoveSpeed()
     {
         agent.speed = NavMeshSpeed * (UpgradeManager.Instance.GetCurrentUpgradeLevel(Define.UpgradeType.MoveSpeed) + 1);
+    }
+
+    public void UpdateCarryingCapacity()
+    {
+        carrier.CarryableCountAdder = UpgradeManager.Instance.GetCurrentUpgradeLevel(Define.UpgradeType.CarryingCount);
     }
 
     /// <summary>

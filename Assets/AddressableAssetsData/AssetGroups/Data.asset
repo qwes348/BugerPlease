@@ -15,6 +15,12 @@ MonoBehaviour:
   m_GroupName: Data
   m_GUID: bda55043bef2a1a4397a4069899144d6
   m_SerializeEntries:
+  - m_GUID: 1646ea9425c275c48b3db0f88b5e30a2
+    m_Address: Data/FieldItemData_ExtraTime
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - fieldItemData
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 610f7ac76bc0e3e41a8716b3ddf09fbe
     m_Address: Data/HireClerk
     m_ReadOnly: 0

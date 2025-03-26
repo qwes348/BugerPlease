@@ -44,6 +44,16 @@ public abstract class UpgradeUiContentBase : MonoBehaviour
         Managers.Game.onMoneyAmountUpdate += MoneyCheck;
     }
 
+    private void OnDisable()
+    {
+        Managers.Game.onMoneyAmountUpdate -= MoneyCheck;
+    }
+
+    private void OnDestroy()
+    {
+        Managers.Game.onMoneyAmountUpdate -= MoneyCheck;
+    }
+
     protected virtual void UpdateLevelImages()
     {
         int maxLevel = baseData.MaxLevel;

@@ -40,17 +40,24 @@ public class MultipleColorTintButton : Button
                 color = Color.black;
                 break;
         }
-        
-        if (gameObject.activeInHierarchy)
+
+        try
         {
-            switch (transition)
+            if (gameObject.activeInHierarchy)
             {
-                case Transition.ColorTint: //Color Tint
-                    ColorTween(color * colors.colorMultiplier, instant);
-                    break;
-                default:
-                    throw new NotSupportedException();
+                switch (transition)
+                {
+                    case Transition.ColorTint: //Color Tint
+                        ColorTween(color * colors.colorMultiplier, instant);
+                        break;
+                    default:
+                        throw new NotSupportedException();
+                }
             }
+        }
+        catch (Exception e)
+        {
+            // ignored
         }
     }
 

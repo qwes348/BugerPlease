@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Triggers;
+using DG.Tweening;
 using NaughtyAttributes;
 using System;
 using UnityEngine;
@@ -73,6 +74,8 @@ public class CustomerController : MonoBehaviour
 
     public void GoToPoint(Vector3 point)
     {
+        if(!agent.enabled)
+            agent.enabled = true;
         agent.SetDestination(point);
     }
 
@@ -153,6 +156,8 @@ public class CustomerController : MonoBehaviour
         // 이동 완료를 테이블에 알림
         MyTableSeat.OnCustomerArrived(this);
         // 앉기 애니메이션 재생
+        agent.enabled = false;
+        transform.DOMove(MyTableSeat.transform.position + Vector3.up * 0.25f, 0.25f);
         transform.rotation = MyTableSeat.transform.rotation;
         anim.SetBool(animParamIsSitting, true);
     }

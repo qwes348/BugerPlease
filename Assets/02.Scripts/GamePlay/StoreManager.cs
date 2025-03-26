@@ -19,6 +19,8 @@ public class StoreManager : StaticMono<StoreManager>
     private MoneyEffectController moneyEffect;
     [SerializeField]
     private Dumpster dumpster;
+    [SerializeField]
+    private List<GameObject> activeAfterPurchaseTableset;
     
     [Header(("런타임 데이터"))]
     [SerializeField][ReadOnly]
@@ -59,6 +61,8 @@ public class StoreManager : StaticMono<StoreManager>
         customerLineController = GetComponent<CustomerLineController>();
         transformPoints = GetComponent<StoreTransformPoints>();
         player = FindAnyObjectByType<PlayerController>();
+        
+        activeAfterPurchaseTableset.ForEach(go => go.SetActive(false));
     }
 
     private void Update()
@@ -101,6 +105,11 @@ public class StoreManager : StaticMono<StoreManager>
     {
         unlockedTables.Add(tableSet);
         emptyTablesQueue.Enqueue(tableSet);
+
+        if (unlockedTables.Count == 1)
+        {
+            activeAfterPurchaseTableset.ForEach(go => go.SetActive(true));
+        }
     }
 
     public void OnTableEmpty(TableSet table)
