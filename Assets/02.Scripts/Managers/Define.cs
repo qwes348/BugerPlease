@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Define 
+public class Define
 {
     #region constant
-    
+
     /// <summary>
     /// 들고가기, 내려놓기의 발동 딜레이 시간 
     /// </summary>
@@ -25,11 +25,11 @@ public class Define
     /// </summary>
     public const float EatingTimePerBurger = 0.5f;
     public const float StackJumpPower = 2.5f;
-    
+
     public const float GameInitialTime = 180f;
     public const float DefaultBGMVolume = 0.4f;
     public const float DefaultSfxVolume = 0.5f;
-    
+
     public const int PriceTableSet = 300;
     public const int MaxWaitingCustomerCount = 5;
     public const int MaxCustomerWantCount = 3;
@@ -38,14 +38,24 @@ public class Define
     public const int Score_CustomerStartEating = 1000;
     public const int FieldItemSpawnChanceScore = 10000; // 이 값만큼 점수가 누적될때마다 필드아이템 소환 확률을 계산함
 
-    public static readonly float[] BGMPitch = new float[] { 1.0f, 1.1f, 1.2f };
+    public static readonly float[] BGMPitch = new float[]
+    {
+        1.0f, 1.1f,
+        1.2f
+    };
 
     // 필드 아이템 소환 확률 딕셔너리: item들의 순서는 확률 높음 -> 확률 낮음 순서임이 보장되어야 함
     public static readonly Dictionary<FieldItemType, float> FieldItemSpawnChanceDict = new Dictionary<FieldItemType, float>()
     {
-        { FieldItemType.None, 0.6f },
-        { FieldItemType.ExtraTime, 0.4f }
+        {
+            FieldItemType.None, 0.6f
+        },
+        {
+            FieldItemType.ExtraTime, 0.4f
+        }
     };
+    // 테이블 해금할 때 마다 증가하는 테이블 가격 표
+    public static readonly List<int> TableSetPrices = new List<int>() { 300, 500, 1000, 1500, 2000 };
     #endregion
 
     #region enum
@@ -63,16 +73,18 @@ public class Define
     }
     public enum Sfx
     {
-        Move,
-        Click,
-        GameStart,
-        GameOver
+        None = -1,
+        UseMoney,
+        GetFieldItem,
+        Carry,
+        GameEnd
     }
     public enum Bgm
     {
-        Title,
+        None = -1,
+        MainMenu,
         Game,
-        Score
+        GameEnd
     }
     public enum FoodType
     {
@@ -141,7 +153,8 @@ public class Define
     {
         None = -1,
         ClerkManage,
-        PlayerUpgrade
+        PlayerUpgrade,
+        Setting
     }
     public enum FieldItemType
     {

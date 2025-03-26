@@ -43,7 +43,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -108,12 +108,34 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: WideSlider_Blank_Background_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 1432
+        height: 202
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 600, y: 80, z: 600, w: 80}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 25379c3508f884449b6cbb94e8aafb45
+      internalID: 473284945
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 10b5715aa629d194682e9964d0d65527
     internalID: 0
     vertices: []
     indices: 
@@ -122,7 +144,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      WideSlider_Blank_Background_0: 473284945
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

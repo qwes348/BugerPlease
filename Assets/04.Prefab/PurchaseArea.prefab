@@ -283,9 +283,9 @@ MonoBehaviour:
   m_fontSize: 0.35
   m_fontSizeBase: 0.35
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 0
+  m_fontSizeMax: 0.35
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -375,6 +375,7 @@ MonoBehaviour:
   myPurchasableType: 0
   price: 0
   itemObject: {fileID: 0}
+  priceText: {fileID: 9092300946482849053}
 --- !u!114 &7275600509825753353
 MonoBehaviour:
   m_ObjectHideFlags: 0

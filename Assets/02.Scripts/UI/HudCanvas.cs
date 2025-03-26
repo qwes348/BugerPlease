@@ -12,6 +12,8 @@ public class HudCanvas : MonoBehaviour
     private TextMeshProUGUI scoreText;
     [SerializeField]
     private SlicedFilledImage timerImage;
+    [SerializeField]
+    private Gradient timerImageGradient;
     
     private int lastMoneyAmount;
     private Tweener runningTween;
@@ -22,17 +24,23 @@ public class HudCanvas : MonoBehaviour
         previewScore = 0;
         OnMoneyChanged(Managers.Game.MoneyAmount);
         OnScoreChanged(Managers.Game.Score);
-        OnTimeChanged(Define.GameInitialTime);
         Managers.Game.onMoneyAmountUpdate += OnMoneyChanged;
         Managers.Game.onScoreUpdate += OnScoreChanged;
-        Managers.Game.onTimeUpdate += OnTimeChanged;
+    }
+
+    private void Update()
+    {
+        if (Managers.Game.GameState != Define.GameState.Running)
+            return;
+        float remainTime = Managers.Game.GameTime;
+        timerImage.fillAmount = Mathf.MoveTowards(timerImage.fillAmount,remainTime / Define.GameInitialTime, Time.deltaTime * 10f);
+        timerImage.color = timerImageGradient.Evaluate(timerImage.fillAmount);
     }
 
     private void OnDestroy()
     {
         Managers.Game.onMoneyAmountUpdate -= OnMoneyChanged;
         Managers.Game.onScoreUpdate -= OnScoreChanged;
-        Managers.Game.onTimeUpdate -= OnTimeChanged;
     }
 
     private void OnMoneyChanged(int moneyAmount)
@@ -50,10 +58,5 @@ public class HudCanvas : MonoBehaviour
     {
         DOVirtual.Int(previewScore, score, 0.3f, v => scoreText.text = v.ToString());
         previewScore = score;
-    }
-
-    private void OnTimeChanged(float remainTime)
-    {
-        timerImage.fillAmount = remainTime / Define.GameInitialTime;
     }
 }

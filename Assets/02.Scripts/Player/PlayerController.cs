@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System;
 using UnityEngine;
 
@@ -19,12 +20,18 @@ public class PlayerController : MonoBehaviour
 
     private float moveSpeedAdder = 0f;
 
+    public Rigidbody Rb => rb;
+
     private void Awake()
     {
         cameraTransform = Camera.main.transform;
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
         foodCarrier = GetComponent<ObjectCarrier>();
+        foodCarrier.onCarriableAdded += stackable =>
+        {
+            Managers.Audio.PlaySfx(Define.Sfx.Carry).Forget();
+        };
     }
 
     private void Start()

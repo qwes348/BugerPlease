@@ -61,6 +61,7 @@ MonoBehaviour:
   m_GroupAssets:
   - {fileID: 11400000, guid: 6da75e07b66d056498a44a55c60f4c4c, type: 2}
   - {fileID: 11400000, guid: 12421cc5f3f79464989aa810182d124e, type: 2}
+  - {fileID: 11400000, guid: 3b75cbc724a60fb43b0e107c1d46a750, type: 2}
   - {fileID: 11400000, guid: c7592f6c09c8ae446b3d52e2c3802edf, type: 2}
   - {fileID: 11400000, guid: 80d2c11d84cddd24b9b55012257cddbb, type: 2}
   - {fileID: 11400000, guid: 4426520a6366a8c4ab8ddc10f446c618, type: 2}
@@ -112,6 +113,8 @@ MonoBehaviour:
     - playerUpgradeInfoData
     - fieldItem
     - fieldItemData
+    - bgm
+    - sfx
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 6357373403a7a6a4985878f7d69c23cd, type: 2}

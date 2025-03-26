@@ -73,6 +73,11 @@ public class GameUI : StaticMono<GameUI>
     {
         if (gameState != Define.GameState.GameOver)
             return;
+        if (Managers.Game.GameTime > 0)
+        {
+            // 게임 종료가 아니라 재시도 or 메인메뉴로 이동인 경우
+            return;
+        }
         
         hudCanvas.gameObject.SetActive(false);
         gameEndCanvas.SetActiveCanvas(true);

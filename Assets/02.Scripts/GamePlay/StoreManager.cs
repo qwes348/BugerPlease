@@ -2,6 +2,7 @@ using Cysharp.Threading.Tasks;
 using NaughtyAttributes;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEditor.Analytics;
 using UnityEngine;
@@ -20,7 +21,9 @@ public class StoreManager : StaticMono<StoreManager>
     [SerializeField]
     private Dumpster dumpster;
     [SerializeField]
-    private List<GameObject> activeAfterPurchaseTableset;
+    private List<GameObject> activeAfterPurchaseTableset;   // 첫 테이블 구매 후 활성화할 오브젝트들
+    [SerializeField]
+    private List<PurchaseArea> allTablePurchaseAreas;
     
     [Header(("런타임 데이터"))]
     [SerializeField][ReadOnly]
@@ -34,7 +37,7 @@ public class StoreManager : StaticMono<StoreManager>
     private int soldCustomerCount;
     private int soldBurgerCount;
     private int totalSales;
-    
+
     #region Properties
     public CustomerLineController CustomerLineController => customerLineController;
     public ObjectStacker CounterBurgerStack => counterBurgerStack;
@@ -91,6 +94,7 @@ public class StoreManager : StaticMono<StoreManager>
                 OnGameStart();
                 break;
             case Define.GameState.GameOver:
+                customerLineController.CancelSpawnCustomers();
                 break;
         }
     }
@@ -109,6 +113,12 @@ public class StoreManager : StaticMono<StoreManager>
         if (unlockedTables.Count == 1)
         {
             activeAfterPurchaseTableset.ForEach(go => go.SetActive(true));
+        }
+
+        // 테이블 해금 가격 인상
+        foreach (PurchaseArea area in allTablePurchaseAreas.Where(area => !area.IsPurchased))
+        {
+            area.UpdatePrice(Define.TableSetPrices[Mathf.Clamp(unlockedTables.Count, 0, Define.TableSetPrices.Count - 1)]);
         }
     }
 

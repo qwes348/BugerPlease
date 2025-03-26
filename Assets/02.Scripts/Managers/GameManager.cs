@@ -27,6 +27,7 @@ public class GameManager
     public Action<int> onMoneyAmountUpdate;
     public Action<int> onMoneyAdded;
     public Action<Define.GameState> onGameStateChanged;
+    public Action<bool> onPaused;
     #endregion
     
     #region 프로퍼티
@@ -96,5 +97,11 @@ public class GameManager
         
         if(score > Managers.SaveLoad.localSaveData.HighScore)
             isNewHighScore = true;
+    }
+
+    public void SetPause(bool pause)
+    {
+        Time.timeScale = pause ? 0 : 1;
+        onPaused?.Invoke(pause);
     }
 }

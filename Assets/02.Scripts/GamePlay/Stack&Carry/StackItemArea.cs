@@ -52,8 +52,9 @@ public class StackItemArea : MonoBehaviour
             }
             obj.OnGetItem();
             obj.JumpToPointAndClear(pc.transform.position).Forget();
+            Managers.Audio.PlaySfx(Define.Sfx.Carry).Forget();
             
-            await UniTask.Yield();
+            await UniTask.Delay(TimeSpan.FromSeconds(0.1f));
         }
     }
 }

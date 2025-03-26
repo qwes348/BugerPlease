@@ -15,7 +15,7 @@ public class CustomerLineController : MonoBehaviour
     // 손님 프리팹 어드레서블
     private const string customerAddress = "Prefab/Customer";
     private const int customerAddressCount = 3;
-    private CancellationTokenSource spawnCts;   // TODO: 게임 끝나면 취소 요청
+    private CancellationTokenSource spawnCts; 
 
     public async UniTask ContinuosSpawnCustomers()
     {
@@ -26,6 +26,11 @@ public class CustomerLineController : MonoBehaviour
 
         while (!spawnCts.IsCancellationRequested)
         {
+            if (StoreManager.Instance == null)
+            {
+                await UniTask.Yield();
+                continue;
+            }
             if (waitingCustomers.Count >= Define.MaxWaitingCustomerCount)
             {
                 // 손님줄이 Max만큼 길다면 1초간 대기
@@ -36,6 +41,8 @@ public class CustomerLineController : MonoBehaviour
             await SpawnNewCustomer();
             await UniTask.Delay(TimeSpan.FromSeconds(1f));
         }
+        
+        spawnCts.Dispose();
     }
 
     [Button]
@@ -49,11 +56,12 @@ public class CustomerLineController : MonoBehaviour
         waitingCustomers.Enqueue(newCustomer);
     }
 
+    /// <summary>
+    /// 제일 앞에있는 손님에게 주문 요청
+    /// </summary>
     [Button]
     public async UniTask NextOrderRequest()
     {
-        // if(waitingCustomers.Count == 0)
-        //     await SpawnNewCustomer();
         while (waitingCustomers.Count <= 0)
             await UniTask.Delay(TimeSpan.FromSeconds(0.5f));
         
@@ -66,5 +74,10 @@ public class CustomerLineController : MonoBehaviour
             customer.GoToPoint(StoreManager.Instance.TransformPoints.WaitingLinePoint.position + Vector3.forward * i);
             i++;
         }
+    }
+
+    public void CancelSpawnCustomers()
+    {
+        spawnCts?.Cancel();
     }
 }

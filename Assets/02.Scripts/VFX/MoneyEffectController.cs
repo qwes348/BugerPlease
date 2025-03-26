@@ -43,6 +43,7 @@ public class MoneyEffectController : MonoBehaviour
             money.transform.position = startPosition;
             money.gameObject.SetActive(true);
             money.transform.DOJump(endPosition, 1f, 1, 0.1f).OnComplete(() => Managers.Pool.Push(money.GetComponent<Poolable>()));
+            Managers.Audio.PlaySfx(Define.Sfx.UseMoney).Forget();
             
             await UniTask.Delay(TimeSpan.FromSeconds(IntervalTime), cancellationToken: cts.Token);
         }

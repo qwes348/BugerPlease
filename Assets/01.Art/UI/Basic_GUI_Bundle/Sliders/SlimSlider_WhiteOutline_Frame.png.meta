@@ -108,12 +108,34 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: SlimSlider_WhiteOutline_Frame_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 1483
+        height: 226
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 600, y: 80, z: 600, w: 80}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eb1d87cc93cd2b448919c9d0852ebb12
+      internalID: -1513575593
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: ab6fdf7c85f066743964bd6efbe6181a
     internalID: 0
     vertices: []
     indices: 
@@ -122,7 +144,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      SlimSlider_WhiteOutline_Frame_0: -1513575593
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

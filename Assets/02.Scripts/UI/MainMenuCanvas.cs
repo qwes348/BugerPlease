@@ -4,7 +4,7 @@ using System;
 using TMPro;
 using UnityEngine;
 
-public class MainMenuCanvas : MonoBehaviour
+public class MainMenuCanvas : StaticMono<MainMenuCanvas>
 {
     [SerializeField]
     private GameObject tapDetector;
@@ -70,5 +70,10 @@ public class MainMenuCanvas : MonoBehaviour
     public void ExitGame()
     {
         Application.Quit();
+    }
+
+    public void UpdateHighScore()
+    {
+        highScoreText.text = Managers.SaveLoad.localSaveData.HighScore.ToString("N0");
     }
 }

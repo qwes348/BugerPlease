@@ -50,7 +50,8 @@ public class CustomerController : MonoBehaviour
 
     private void Update()
     {
-        anim.SetFloat(animParamMoveSpeed, agent.remainingDistance > agent.stoppingDistance ? agent.velocity.magnitude : 0f);
+        if(agent.enabled)
+            anim.SetFloat(animParamMoveSpeed, agent.remainingDistance > agent.stoppingDistance ? agent.velocity.magnitude : 0f);
         OnStateUpdate();
     }
 

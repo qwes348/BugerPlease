@@ -52,6 +52,9 @@ public class GameEndCanvas : MonoBehaviour
 
     private async UniTaskVoid ActivateSequence()
     {
+        Managers.Audio.PlayBgm(Define.Bgm.GameEnd).Forget();
+        Managers.Audio.PlaySfx(Define.Sfx.GameEnd).Forget();
+        
         notifyTextTransform.localScale = Vector3.one;
         notifyTextTransform.rotation = Quaternion.Euler(0, 0, 0);
         notifyTextTransform.gameObject.SetActive(true);

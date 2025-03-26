@@ -42,6 +42,7 @@ public abstract class FieldItemBase : MonoBehaviour
 
     protected virtual async UniTask DisappearTween(Transform playerTransform)
     {
+        Managers.Audio.PlaySfx(Define.Sfx.GetFieldItem).Forget();
         transform.DOMove(playerTransform.position, 0.25f);
         await transform.DOScale(Vector3.one * 0.1f, 0.25f);
         Managers.Pool.Push(myPoolable);
